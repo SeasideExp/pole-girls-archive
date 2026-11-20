@@ -1,0 +1,2999 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>架線柱ちゃん アーカイブ</title>
+  <style>
+    html { scrollbar-gutter: stable; }
+    html, body { margin: 0; padding: 0; min-height: 100%; background: #F4F7FB; }
+    body { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+    #archive-app { flex: 1 0 auto; display: flex; flex-direction: column; }
+/* ===== Base & Theme Tokens ===== */
+.ba-root {
+  --ba-accent: #00AEFF;
+  --ba-accent-rgb: 0, 174, 255;
+  --ba-accent-text: #FFFFFF;
+  --ba-navy: #1B2B44;
+  --ba-navy-sub: #3A506B;
+  --ba-muted: #64748B;
+  --ba-surface: #FFFFFF;
+  --ba-bg: #F4F7FB;
+  --ba-border: #DCE6F2;
+  position: relative;
+  flex: 1 0 auto;
+  min-height: 100%;
+  color: var(--ba-navy);
+  background-color: var(--ba-bg);
+  font-family: "Inter", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  line-height: 1.6;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ba-root *, .ba-root *::before, .ba-root *::after {
+  box-sizing: border-box;
+}
+
+/* 背景レイヤー（パターン切替 + 光彩グラデーション） */
+.ba-bg-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 88% 8%, rgba(var(--ba-accent-rgb), 0.14) 0%, transparent 42%),
+    radial-gradient(circle at 8% 85%, rgba(var(--ba-accent-rgb), 0.10) 0%, transparent 44%);
+}
+
+.ba-root[data-pattern="grid"] .ba-bg-pattern {
+  background-image:
+    linear-gradient(to right, rgba(27, 43, 68, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(27, 43, 68, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.ba-root[data-pattern="dots"] .ba-bg-pattern {
+  background-image: radial-gradient(rgba(27, 43, 68, 0.12) 1.4px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+
+.ba-root[data-pattern="stripes"] .ba-bg-pattern {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(27, 43, 68, 0.035) 0px,
+    rgba(27, 43, 68, 0.035) 2px,
+    transparent 2px,
+    transparent 16px
+  );
+}
+
+.ba-bg-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ba-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+}
+
+/* ===== Header (B Archive Style) ===== */
+.ba-header {
+  position: relative;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--ba-border);
+  border-radius: 18px;
+  padding: 26px 30px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 30px -12px rgba(27, 43, 68, 0.10);
+  overflow: hidden;
+}
+
+.ba-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--ba-accent), rgba(var(--ba-accent-rgb), 0.72) 60%, transparent 100%);
+}
+
+.ba-header::after {
+  content: "";
+  position: absolute;
+  top: -30px;
+  right: -40px;
+  width: 240px;
+  height: 180%;
+  background: linear-gradient(135deg, rgba(var(--ba-accent-rgb), 0.11), rgba(var(--ba-accent-rgb), 0.02));
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+.ba-header-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.ba-badge-wrap {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin-bottom: 10px;
+}
+
+.ba-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--ba-navy);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 4px 14px;
+  transform: skewX(-14deg);
+  border-left: 4px solid var(--ba-accent);
+  box-shadow: 0 3px 10px rgba(27, 43, 68, 0.16);
+}
+
+.ba-badge span {
+  display: inline-block;
+  transform: skewX(14deg);
+}
+
+/* 装飾バッジ横のホームページリンク（案4：アクセント塗り・斜めスラッシュ＋光沢スイープ） */
+.ba-home-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--ba-accent);
+  background-image: linear-gradient(95deg, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.08));
+  color: var(--ba-accent-text, #FFFFFF);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 4px 13px;
+  text-decoration: none;
+  transform: skewX(-14deg);
+  overflow: hidden;
+  box-shadow: 0 4px 12px -2px rgba(var(--ba-accent-rgb), 0.45);
+  transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ba-home-link::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 18%, rgba(255, 255, 255, 0.46) 50%, transparent 82%);
+  transition: left 0.48s ease;
+  pointer-events: none;
+}
+
+.ba-home-link:hover {
+  transform: skewX(-14deg) translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 7px 16px -3px rgba(var(--ba-accent-rgb), 0.55);
+}
+
+.ba-home-link:hover::after {
+  left: 150%;
+}
+
+.ba-home-link:focus-visible {
+  outline: 3px solid var(--ba-navy);
+  outline-offset: 2px;
+}
+
+.ba-home-link-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transform: skewX(14deg);
+}
+
+.ba-home-link-icon,
+.ba-home-link-arrow {
+  flex-shrink: 0;
+}
+
+.ba-home-link-arrow {
+  transition: transform 0.18s ease;
+}
+
+.ba-home-link:hover .ba-home-link-arrow {
+  transform: translate(1.5px, -1.5px);
+}
+
+.ba-title {
+  margin: 0;
+  font-size: clamp(24px, 3.6vw, 36px);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: var(--ba-navy);
+  line-height: 1.2;
+}
+
+.ba-subtitle {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--ba-muted);
+  font-weight: 500;
+}
+
+.ba-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ba-counter-box {
+  background: #F4F7FB;
+  border: 1px solid var(--ba-border);
+  border-radius: 14px;
+  padding: 12px 22px;
+  text-align: right;
+  min-width: 158px;
+}
+
+.ba-counter-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--ba-accent);
+  margin-bottom: 2px;
+}
+
+.ba-counter-value {
+  font-size: clamp(28px, 3.4vw, 38px);
+  font-weight: 900;
+  color: var(--ba-navy);
+  line-height: 1.08;
+  font-variant-numeric: tabular-nums;
+}
+
+.ba-counter-value small {
+  font-size: clamp(13px, 1.4vw, 15px);
+  font-weight: 700;
+  color: var(--ba-muted);
+  margin-left: 4px;
+}
+
+/* ===== Filter & Search Panel (Compact & Sticky) ===== */
+.ba-filter-sentinel {
+  height: 1px;
+  margin-bottom: -1px;
+  pointer-events: none;
+}
+
+.ba-filter-panel {
+  position: sticky;
+  top: 8px;
+  z-index: 40;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--ba-border);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 20px -10px rgba(27, 43, 68, 0.08);
+  transition: padding 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.ba-filter-panel.is-stuck {
+  padding: 9px 14px;
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(27, 43, 68, 0.14);
+  box-shadow: 0 10px 28px -10px rgba(27, 43, 68, 0.18);
+}
+
+.ba-filter-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 10px;
+  margin-bottom: 8px;
+}
+
+.ba-search-wrap {
+  position: relative;
+  flex: 1 1 200px;
+  max-width: 340px;
+}
+
+.ba-search-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  color: #94A3B8;
+  pointer-events: none;
+}
+
+.ba-search-input {
+  width: 100%;
+  padding: 7px 32px 7px 34px;
+  border-radius: 9px;
+  border: 1.5px solid var(--ba-border);
+  background: #F8FAFC;
+  color: var(--ba-navy);
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.ba-search-input:focus {
+  border-color: var(--ba-accent);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(var(--ba-accent-rgb), 0.16);
+}
+
+.ba-search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: none;
+  background: #E2E8F0;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.ba-search-clear:hover {
+  background: #CBD5E1;
+}
+
+.ba-search-clear[hidden] {
+  display: none;
+}
+
+.ba-filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+/* OR / AND・昇順 / 降順・表示密度 切替ピル */
+.ba-logic-toggle,
+.ba-sort-toggle,
+.ba-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: #EDF2F8;
+  padding: 2.5px;
+  border-radius: 9px;
+  border: 1px solid var(--ba-border);
+}
+
+.ba-logic-btn,
+.ba-sort-btn,
+.ba-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  color: var(--ba-muted);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4.5px 9px;
+  border-radius: 6.5px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.ba-view-btn svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.ba-logic-btn.is-active,
+.ba-sort-btn.is-active,
+.ba-view-btn.is-active {
+  background: var(--ba-navy);
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(27, 43, 68, 0.2);
+}
+
+.ba-result-count {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--ba-muted);
+  padding: 0 3px;
+  white-space: nowrap;
+}
+
+.ba-result-count strong {
+  color: var(--ba-navy);
+  font-size: 13px;
+}
+
+/* 属性フィルター（大カテゴリタブ切替＋コンパクトトレイ＋選択中バー） */
+.ba-attr-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ba-cat-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.ba-cat-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4.5px 10px;
+  border-radius: 8px;
+  border: 1.5px solid var(--ba-border);
+  background: #F4F7FB;
+  color: var(--ba-navy-sub);
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.ba-cat-tab:hover {
+  border-color: var(--ba-accent);
+  color: var(--ba-navy);
+  background: #FFFFFF;
+}
+
+.ba-cat-tab.has-selected:not(.is-open) {
+  background: rgba(var(--ba-accent-rgb), 0.10);
+  border-color: var(--ba-accent);
+  color: var(--ba-navy);
+}
+
+.ba-cat-tab.is-all.is-active {
+  background: var(--ba-navy);
+  border-color: var(--ba-navy);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px -3px rgba(27, 43, 68, 0.28);
+}
+
+.ba-cat-tab.is-open {
+  background: #FFFFFF;
+  border-color: var(--ba-accent);
+  color: var(--ba-navy);
+  box-shadow: 0 3px 10px -2px rgba(var(--ba-accent-rgb), 0.22);
+}
+
+.ba-cat-tab.is-open::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -1.5px;
+  height: 2.5px;
+  border-radius: 999px;
+  background: var(--ba-accent);
+}
+
+.ba-cat-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.3;
+  background: rgba(27, 43, 68, 0.08);
+  color: var(--ba-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ba-cat-tab.has-selected:not(.is-open) .ba-cat-tab-badge {
+  background: var(--ba-accent);
+  color: var(--ba-accent-text, #FFFFFF);
+}
+
+.ba-cat-tab.is-open .ba-cat-tab-badge {
+  background: rgba(27, 43, 68, 0.09);
+  color: var(--ba-navy-sub);
+}
+
+.ba-cat-tab.is-open.has-selected .ba-cat-tab-badge {
+  background: var(--ba-accent);
+  color: var(--ba-accent-text, #FFFFFF);
+}
+
+.ba-cat-tab-chevron {
+  font-size: 9px;
+  opacity: 0.65;
+  transition: transform 0.16s ease;
+}
+
+.ba-cat-tab.is-open .ba-cat-tab-chevron {
+  transform: rotate(180deg);
+  opacity: 0.9;
+}
+
+.ba-cat-tray {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #F4F7FB;
+  border: 1px solid var(--ba-border);
+  max-height: 36vh;
+  overflow-y: auto;
+}
+
+.ba-attr-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 7px;
+  border: 1.5px solid var(--ba-border);
+  background: #FFFFFF;
+  color: var(--ba-navy);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  user-select: none;
+}
+
+.ba-attr-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--btn-color, var(--ba-accent));
+  box-shadow: 0 3px 10px rgba(27, 43, 68, 0.08);
+}
+
+.ba-attr-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  background: var(--btn-color, var(--ba-accent));
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.ba-attr-btn.is-active {
+  background: var(--btn-color, var(--ba-accent));
+  border-color: var(--btn-color, var(--ba-accent));
+  color: var(--btn-text, #FFFFFF);
+  box-shadow: 0 4px 12px -3px rgba(27, 43, 68, 0.28);
+}
+
+.ba-attr-btn.is-active .ba-attr-dot {
+  background: var(--btn-text, #FFFFFF);
+}
+
+.ba-attr-btn.is-all.is-active {
+  background: var(--ba-navy);
+  border-color: var(--ba-navy);
+  color: #FFFFFF;
+}
+
+.ba-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding-top: 8px;
+  border-top: 1px solid #EDF2F7;
+}
+
+.ba-active-filters-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--ba-muted);
+  white-space: nowrap;
+}
+
+.ba-active-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 7px;
+  border: none;
+  background: var(--chip-color, var(--ba-accent));
+  color: var(--chip-text, #FFFFFF);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.ba-active-chip:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.ba-active-chip-x {
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0.8;
+}
+
+.ba-active-clear {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  color: var(--ba-accent);
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.ba-active-clear:hover {
+  background: rgba(var(--ba-accent-rgb), 0.10);
+}
+
+@media (max-width: 640px) {
+  .ba-filter-panel {
+    top: 4px;
+    padding: 9px 11px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+  .ba-filter-panel.is-stuck {
+    padding: 8px 10px;
+    max-height: 46vh;
+    max-height: 46dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .ba-search-wrap {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+  .ba-filter-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 460px) {
+  .ba-view-btn-label {
+    display: none;
+  }
+}
+
+/* ===== Character Icon Grid & View Modes ===== */
+.ba-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 18px;
+}
+
+.ba-grid.is-view-compact {
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px;
+}
+
+.ba-grid.is-view-list {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 520px) {
+  .ba-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+  }
+  .ba-grid.is-view-compact {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .ba-grid.is-view-list {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+/* 額装スタイルカード（極細ニュートラル外枠＋内側マット余白） */
+.ba-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  border: 1px solid rgba(27, 43, 68, 0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  box-shadow: 0 4px 14px -8px rgba(27, 43, 68, 0.09);
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.ba-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(27, 43, 68, 0.25);
+  box-shadow: 0 14px 26px -12px rgba(27, 43, 68, 0.18);
+}
+
+.ba-card:focus-visible {
+  outline: 3px solid var(--ba-accent);
+  outline-offset: 2px;
+}
+
+/* 光沢スイープエフェクト */
+.ba-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 65%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.5) 50%, transparent 80%);
+  transform: skewX(-18deg);
+  transition: left 0.55s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ba-card:hover::after {
+  left: 150%;
+}
+
+.ba-card-thumb {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding: 8px 8px 6px;
+  background: #FAFBFD;
+  border-bottom: 1px solid rgba(27, 43, 68, 0.05);
+}
+
+.ba-card-thumb-frame {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #FFFFFF;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(27, 43, 68, 0.08);
+}
+
+.ba-card-thumb-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ba-card:hover .ba-card-thumb-frame img {
+  transform: scale(1.045);
+}
+
+.ba-card-body {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  background: #FFFFFF;
+}
+
+.ba-card-list-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ba-card-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ba-card-no {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--ba-navy-sub);
+  background: #F1F5F9;
+  border-left: 2.5px solid var(--char-color, var(--ba-accent));
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+}
+
+.ba-card-sub {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--char-color, var(--ba-accent));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ba-card-name {
+  display: block;
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 900;
+  color: var(--ba-navy);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ba-card-catch {
+  display: block;
+  font-size: 11.5px;
+  color: var(--ba-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ba-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.ba-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--tag-text, #FFFFFF);
+  background: var(--tag-color, #64748B);
+  letter-spacing: 0.02em;
+}
+
+/* コンパクトアイコン表示 */
+.ba-grid.is-view-compact .ba-card {
+  border-radius: 11px;
+}
+
+.ba-grid.is-view-compact .ba-card:hover {
+  transform: translateY(-3px);
+}
+
+.ba-grid.is-view-compact .ba-card-thumb {
+  padding: 5px 5px 4px;
+  border-bottom: none;
+  background: #FFFFFF;
+}
+
+.ba-grid.is-view-compact .ba-card-thumb-frame {
+  border-radius: 5px;
+}
+
+.ba-grid.is-view-compact .ba-card-body {
+  padding: 2px 6px 7px;
+  gap: 0;
+}
+
+.ba-grid.is-view-compact .ba-card-name {
+  font-size: 11.5px;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.25;
+}
+
+/* リスト表示 */
+.ba-grid.is-view-list .ba-card {
+  flex-direction: row;
+  align-items: center;
+  padding: 7px 14px 7px 7px;
+  gap: 12px;
+  border-radius: 12px;
+}
+
+.ba-grid.is-view-list .ba-card:hover {
+  transform: translateY(-2px);
+}
+
+.ba-grid.is-view-list .ba-card-thumb {
+  width: 68px;
+  height: 68px;
+  flex-shrink: 0;
+  padding: 4px;
+  border-bottom: none;
+  border-radius: 8px;
+  background: #FAFBFD;
+  border: 1px solid rgba(27, 43, 68, 0.06);
+}
+
+.ba-grid.is-view-list .ba-card-thumb-frame {
+  border-radius: 5px;
+}
+
+.ba-grid.is-view-list .ba-card-body {
+  padding: 1px 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 14px;
+}
+
+.ba-grid.is-view-list .ba-card-list-main {
+  flex: 1 1 210px;
+  gap: 2px;
+}
+
+.ba-grid.is-view-list .ba-card-name {
+  font-size: 15px;
+}
+
+.ba-grid.is-view-list .ba-card-tags {
+  margin-top: 0;
+  justify-content: flex-end;
+  flex: 0 1 auto;
+}
+
+@media (max-width: 520px) {
+  .ba-grid.is-view-list .ba-card {
+    padding: 6px 10px 6px 6px;
+    gap: 10px;
+  }
+  .ba-grid.is-view-list .ba-card-thumb {
+    width: 56px;
+    height: 56px;
+  }
+  .ba-grid.is-view-list .ba-card-body {
+    gap: 5px;
+  }
+  .ba-grid.is-view-list .ba-card-tags {
+    justify-content: flex-start;
+  }
+}
+
+/* 空状態 */
+.ba-empty {
+  text-align: center;
+  padding: 58px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1.5px dashed var(--ba-border);
+  border-radius: 18px;
+  color: var(--ba-muted);
+}
+
+.ba-empty-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ba-navy);
+}
+
+.ba-empty-btn {
+  margin-top: 14px;
+  padding: 8px 18px;
+  border-radius: 9px;
+  border: none;
+  background: var(--ba-accent);
+  color: var(--ba-accent-text, #FFFFFF);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ===== Footer ===== */
+.ba-footer {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ba-border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--ba-muted);
+  font-weight: 600;
+}
+
+.ba-footer-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ba-navy-sub);
+}
+
+.ba-footer-accent::before {
+  content: "";
+  width: 14px;
+  height: 4px;
+  background: var(--ba-accent);
+  transform: skewX(-20deg);
+}
+
+/* ===== Profile Modal Window (別窓プロフィール表示) ===== */
+.ba-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(14, 25, 43, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  overscroll-behavior: contain;
+  transition: opacity 0.22s ease, visibility 0.22s ease;
+}
+
+.ba-modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.ba-modal-window {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  max-height: min(88vh, 760px);
+  max-height: min(88dvh, 760px);
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 28px 65px -16px rgba(10, 22, 42, 0.48);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ba-modal-overlay.is-open .ba-modal-window {
+  transform: translateY(0) scale(1);
+}
+
+.ba-modal-topbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  background: var(--ba-navy);
+  color: #FFFFFF;
+  border-bottom: 3px solid var(--modal-color, var(--ba-accent));
+}
+
+.ba-modal-top-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  min-width: 0;
+}
+
+.ba-modal-top-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--modal-color, var(--ba-accent));
+  transform: skewX(-14deg);
+  flex-shrink: 0;
+}
+
+.ba-modal-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ba-modal-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: var(--ba-accent);
+  color: var(--ba-accent-text, #FFFFFF);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.ba-modal-edit-btn:hover {
+  filter: brightness(1.08);
+}
+
+.ba-modal-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.ba-modal-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: rotate(90deg);
+}
+
+/* モーダル本体 2カラム */
+.ba-modal-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 41% 59%;
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+/* 左エリア：立ち絵ステージ */
+.ba-modal-stage {
+  position: relative;
+  background: #EDF4FC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px;
+  border-right: 1px solid var(--ba-border);
+}
+
+.ba-modal-stage-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(125deg, rgba(255,255,255,0.92) 0%, rgba(240,247,255,0.85) 55%, var(--modal-color, #00AEFF) 180%);
+  pointer-events: none;
+}
+
+.ba-modal-stage-slash {
+  position: absolute;
+  top: -20%;
+  left: -18%;
+  width: 72%;
+  height: 140%;
+  background: var(--modal-color, var(--ba-accent));
+  opacity: 0.13;
+  transform: skewX(-16deg);
+  pointer-events: none;
+}
+
+.ba-modal-stage-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 26%;
+  width: 2px;
+  background: var(--modal-color, var(--ba-accent));
+  opacity: 0.24;
+  transform: skewX(-16deg);
+  pointer-events: none;
+}
+
+.ba-modal-art {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  filter: drop-shadow(0 16px 26px rgba(27, 43, 68, 0.22));
+  transform: scale(var(--art-scale, 1));
+  transform-origin: center center;
+}
+
+.ba-modal-art.is-icon-fallback {
+  width: min(260px, 85%);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border: 4px solid #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 18px 34px rgba(27, 43, 68, 0.22);
+}
+
+/* ステージ画像切替タブ（上部配置） */
+.ba-modal-stage:has(.ba-stage-tabs) {
+  padding-top: 58px;
+}
+
+.ba-stage-tabs {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  max-width: calc(100% - 24px);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  border-radius: 10px;
+  background: rgba(20, 34, 56, 0.90);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 6px 18px rgba(10, 22, 42, 0.22);
+}
+
+.ba-stage-tab {
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 5px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.ba-stage-tab:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.ba-stage-tab.is-active {
+  background: var(--modal-color, var(--ba-accent));
+  color: var(--modal-color-text, #FFFFFF);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* ステージ下部・詳細解説リンクボタン（案3：上部タブと対になるグラスフローティング配置） */
+.ba-modal-stage:has(.ba-stage-detail-link) {
+  padding-bottom: 62px;
+}
+
+.ba-stage-detail-link {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  max-width: calc(100% - 24px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px 8px 13px;
+  border-radius: 11px;
+  background: rgba(20, 34, 56, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-left: 3.5px solid var(--modal-color, var(--ba-accent));
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(10, 22, 42, 0.34);
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ba-stage-detail-link::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 58%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 18%, rgba(255, 255, 255, 0.34) 50%, transparent 82%);
+  transform: skewX(-18deg);
+  transition: left 0.52s ease;
+  pointer-events: none;
+}
+
+.ba-stage-detail-link:hover {
+  transform: translateX(-50%) translateY(-2px);
+  background: var(--modal-color, var(--ba-accent));
+  color: var(--modal-color-text, #FFFFFF);
+  border-color: rgba(255, 255, 255, 0.55);
+  border-left-color: var(--modal-color-text, #FFFFFF);
+  box-shadow: 0 12px 26px -4px rgba(10, 22, 42, 0.42);
+}
+
+.ba-stage-detail-link:hover::after {
+  left: 150%;
+}
+
+.ba-stage-detail-link:focus-visible {
+  outline: 3px solid var(--modal-color, var(--ba-accent));
+  outline-offset: 2px;
+}
+
+.ba-stage-detail-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 1.5px;
+  transform: rotate(45deg);
+  background: var(--modal-color, var(--ba-accent));
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.ba-stage-detail-link:hover .ba-stage-detail-dot {
+  background: var(--modal-color-text, #FFFFFF);
+}
+
+.ba-stage-detail-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ba-stage-detail-icon {
+  flex-shrink: 0;
+  opacity: 0.92;
+  transition: transform 0.2s ease;
+}
+
+.ba-stage-detail-link:hover .ba-stage-detail-icon {
+  transform: translate(2px, -2px);
+}
+
+/* 右エリア：プロフィール情報 */
+.ba-modal-info {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 26px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: #FFFFFF;
+}
+
+.ba-profile-head {
+  border-bottom: 1.5px solid #EDF2F7;
+  padding-bottom: 14px;
+}
+
+.ba-profile-head-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ba-profile-title-col {
+  min-width: 0;
+  flex: 1;
+}
+
+.ba-profile-big-num {
+  flex-shrink: 0;
+  font-size: clamp(28px, 3.8vw, 44px);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--modal-color, var(--ba-accent));
+  opacity: 0.38;
+  white-space: nowrap;
+  user-select: none;
+  padding-top: 2px;
+}
+
+.ba-profile-sub {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--modal-color, var(--ba-accent));
+  margin-bottom: 4px;
+}
+
+.ba-profile-name {
+  margin: 0;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 900;
+  color: var(--ba-navy);
+  line-height: 1.2;
+}
+
+.ba-profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.ba-profile-tags .ba-tag-pill {
+  font-size: 12px;
+  padding: 4px 11px;
+  border-radius: 7px;
+}
+
+/* キャッチコピー/セリフ枠 */
+.ba-quote-box {
+  position: relative;
+  background: #F4F8FD;
+  border-left: 4px solid var(--modal-color, var(--ba-accent));
+  border-radius: 0 12px 12px 0;
+  padding: 13px 16px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ba-navy);
+  line-height: 1.55;
+}
+
+/* スペック一覧 */
+.ba-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--ba-muted);
+  margin-bottom: 8px;
+}
+
+.ba-section-label::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--modal-color, var(--ba-accent));
+  transform: skewX(-16deg);
+}
+
+.ba-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.ba-spec-item {
+  background: #F8FAFD;
+  border: 1px solid #E5EDF6;
+  border-radius: 10px;
+  padding: 9px 12px;
+}
+
+.ba-spec-key {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--ba-muted);
+  margin-bottom: 2px;
+}
+
+.ba-spec-val {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--ba-navy);
+  word-break: break-word;
+}
+
+/* 紹介文 */
+.ba-bio-text {
+  margin: 0;
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* モーダル下部ナビゲーション（前へ / 次へ） */
+.ba-modal-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 18px;
+  background: #F4F7FB;
+  border-top: 1px solid var(--ba-border);
+}
+
+.ba-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--ba-border);
+  background: #FFFFFF;
+  color: var(--ba-navy);
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  max-width: 42%;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.ba-nav-btn:hover:not(:disabled) {
+  border-color: var(--ba-accent);
+  color: var(--ba-accent);
+  transform: translateY(-1px);
+}
+
+.ba-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ba-nav-btn-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ba-nav-pos {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ba-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* モバイル・タブレット向けモーダル調整 */
+@media (max-width: 780px) {
+  .ba-container {
+    padding: 16px 14px 48px;
+  }
+  .ba-header {
+    padding: 20px 18px;
+  }
+  .ba-modal-overlay {
+    padding: 10px;
+  }
+  .ba-modal-window {
+    max-height: 92vh;
+    max-height: 92dvh;
+  }
+  .ba-modal-body {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+  .ba-modal-stage {
+    min-height: 220px;
+    max-height: 360px;
+    border-right: none;
+    border-bottom: 1px solid var(--ba-border);
+  }
+  .ba-modal-stage:has(.ba-stage-tabs),
+  .ba-modal-stage:has(.ba-stage-detail-link) {
+    min-height: 290px;
+  }
+  .ba-modal-stage:has(.ba-stage-tabs):has(.ba-stage-detail-link) {
+    min-height: 336px;
+  }
+  .ba-modal-art {
+    max-height: 240px;
+  }
+  .ba-modal-art.is-icon-fallback {
+    width: min(200px, 65vw);
+    max-height: 200px;
+  }
+  .ba-stage-tab {
+    max-width: 120px;
+    padding: 5px 10px;
+  }
+  .ba-modal-stage:has(.ba-stage-tabs):has(.ba-stage-detail-link) .ba-modal-art {
+    max-height: 200px;
+  }
+  .ba-stage-detail-link {
+    padding: 7px 12px 7px 10px;
+    font-size: 11.5px;
+    gap: 6px;
+  }
+  .ba-modal-info {
+    overflow-y: visible;
+    padding: 20px 18px;
+  }
+  .ba-specs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+  </style>
+</head>
+<body>
+  <div id="archive-app"></div>
+
+  <!-- キャラクターデータ本体（このHTMLを制作ツールに読み込むことで再編集可能） -->
+  <script id="char-archive-data" type="application/json">{"version":1,"site":{"title":"架線柱ちゃん アーカイブ","subtitle":"鉄道擬人化「架線柱ちゃん」キャラクターデータベース","badgeText":"DATABASE","homeUrl":"https://sites.google.com/view/seasideexp-pole-girls/top","homeLabel":"架線柱ちゃんのHPへ","homeUrl2":"https://sites.google.com/view/seasideexp-pole-girls/introduction","homeLabel2":"架線柱ちゃんとは？","counterLabel":"キャラクター総数","modalLabel":"CHARACTER PROFILE","modalNumberFormat":"// #{01}","specSectionLabel":"SPECIFICATION // DATA","bioSectionLabel":"PROFILE // OVERVIEW","imageTab1Label":"画像1","imageTab2Label":"画像2","detailLinkLabel":"詳しい解説ページを見る","accentColor":"#00AEFF","bgPattern":"stripes","defaultViewMode":"grid","footerText":"「架線柱ちゃん」は「しーさいど（@SeasideExp）」による鉄道系擬人化創作です。実在の鉄道会社様とは一切関係ありません。","footerCredit":"CHARACTER ARCHIVE SYSTEM（Powered by しーさいど）"},"attributeCategories":[{"id":"cat_mwnq26o4_8d08b","name":"社線"},{"id":"cat_a","name":"材質"},{"id":"cat_b","name":"地域"},{"id":"cat_mwnokx1k_frxcm","name":"時代"},{"id":"cat_c","name":"特性"},{"id":"cat_d","name":"形状"}],"attributes":[{"id":"attr_steel","name":"鉄柱","color":"#828282","categoryId":"cat_a"},{"id":"attr_concrete","name":"コンクリート柱","color":"#826A40","categoryId":"cat_a"},{"id":"attr_wood","name":"木柱","color":"#0F8000","categoryId":"cat_a"},{"id":"attr_mwoiz0us_s0xb8","name":"東北","color":"#337A36","categoryId":"cat_b"},{"id":"attr_kanto","name":"関東","color":"#00AEFF","categoryId":"cat_b"},{"id":"attr_mwok158v_zyzu3","name":"甲信越","color":"#70D2FF","categoryId":"cat_b"},{"id":"attr_chubu","name":"中部","color":"#FFB005","categoryId":"cat_b"},{"id":"attr_kansai","name":"関西","color":"#F43F5E","categoryId":"cat_b"},{"id":"attr_electric_origin","name":"最初から電化","color":"#FFCB3D","categoryId":"cat_c"},{"id":"attr_steam_electrified","name":"汽車→電化","color":"#7C3AED","categoryId":"cat_c"},{"id":"attr_mwojlkch_01opv","name":"野球","color":"#DEDEDE","categoryId":"cat_c"},{"id":"attr_taper","name":"テーパー柱","color":"#F59E0B","categoryId":"cat_d"},{"id":"attr_non_taper","name":"ノーテーパー柱","color":"#14B8A6","categoryId":"cat_d"},{"id":"attr_mwnpqsd9_dsm3a","name":"四角鉄柱","color":"#71CCA4","categoryId":"cat_d"},{"id":"attr_mwnrvqfr_k1oib","name":"不詳","color":"#5A3776","categoryId":"cat_mwnokx1k_frxcm"},{"id":"attr_mwnommtl_ya4ku","name":"大正","color":"#8E59A6","categoryId":"cat_mwnokx1k_frxcm"},{"id":"attr_mwnomwop_i7cag","name":"昭和戦前","color":"#609A74","categoryId":"cat_mwnokx1k_frxcm"},{"id":"attr_mwnon4si_5vwuv","name":"昭和戦後","color":"#49CA58","categoryId":"cat_mwnokx1k_frxcm"},{"id":"attr_mwnonm95_u50dw","name":"平成令和","color":"#FFA3F7","categoryId":"cat_mwnokx1k_frxcm"},{"id":"attr_mwnpqeq4_3raa9","name":"チャンネル柱","color":"#71CCA4","categoryId":"cat_d"},{"id":"attr_mwok629n_978d0","name":"三角柱","color":"#CC6D66","categoryId":"cat_d"},{"id":"attr_mwolhk0m_97sy5","name":"大手","color":"#00A9C7","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwolht9z_4c8om","name":"準大手","color":"#1BAC94","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwoli31j_lh95x","name":"中小","color":"#86B332","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwolhbqm_mmfp6","name":"汎用","color":"#969696","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnq2qtp_aymyz","name":"KQ","color":"#E31616","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwol9i3k_0a4um","name":"鉄塔","color":"#4F4F4F","categoryId":"cat_d"},{"id":"attr_mwnqdhn2_9nt04","name":"元・鉄塔","color":"#454545","categoryId":"cat_d"},{"id":"attr_mwnqk3sz_6bln1","name":"OER","color":"#3A7198","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnqnkp2_j7ooc","name":"ST","color":"#8EC184","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnqsi62_zeegz","name":"TQ","color":"#565655","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnr0uxe_wzoe3","name":"TB","color":"#00AEFF","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnrk4j7_jpu1v","name":"SB","color":"#E9C664","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnrmb9x_ofc3v","name":"KTR","color":"#C51863","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnrjl7n_cpzwr","name":"KDK","color":"#0869B3","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwoiyga4_6elxm","name":"JNR","color":"#1261A5","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnr9nxl_hn1ft","name":"JRE","color":"#00813B","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnrl6il_ea7he","name":"JRC","color":"#FFB005","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnrjejv_bmrtv","name":"JRW","color":"#0869B3","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnrhbrl_ihqxb","name":"M","color":"#E31616","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnrmmla_i1jxu","name":"HQ","color":"#612F35","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnrmr2m_8uczl","name":"HSn","color":"#B3B3B3","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnrkwqd_h2vm4","name":"SY","color":"#B3B3B3","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwnrlwut_28pyy","name":"KB","color":"#ED5C5F","categoryId":"cat_mwnq26o4_8d08b"},{"id":"attr_mwola27d_aqx8i","name":"H鋼柱","color":"#897DCA","categoryId":"cat_d"},{"id":"attr_pipe","name":"鋼管柱","color":"#0EA5E9","categoryId":"cat_d"},{"id":"attr_mwolafb6_n7n3f","name":"鋼管パイプ","color":"#A66E68","categoryId":"cat_d"}],"characters":[{"id":"char_a","name":"KHK①","subName":"架線柱ちゃん","catchphrase":"湘南電鉄の架線柱ちゃん","themeColor":"#C34256","iconUrl":"img/chan_thum01.webp","standingUrl":"img/chara_01.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":150,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/01","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_steel","attr_kanto","attr_electric_origin","attr_mwnomwop_i7cag","attr_mwnpqsd9_dsm3a","attr_mwnq2qtp_aymyz","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"平面トラス等"},{"label":"設置時期","value":"昭和5年（開業時）"},{"label":"所在地","value":"京急本線（安針塚、県立大学、堀ノ内～浦賀） 逗子線　など"}],"bio":"　開業から95年、今日も同じ場所に立ち続けている……はずなのだが、注目度が低すぎて、不明な事が多い架線柱ちゃんだ！　永年の間に細かいパーツが付け変えられたり、どこまでが原型なのかもよく分からない。そもそも本当に開業時から建ってるのか？すら疑念が拭えないくらい不明点が多い！"},{"id":"char_mwnptnmf_lz1ob","name":"KHK②","subName":"架線柱ちゃん","catchphrase":"京急の最新架線柱","themeColor":"#C34256","iconUrl":"img/chan_thum02.webp","standingUrl":"img/chara_02.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":150,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/02","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_steel","attr_kanto","attr_electric_origin","attr_mwnonm95_u50dw","attr_pipe","attr_mwnq2qtp_aymyz","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鋼管柱"},{"label":"ビーム形状","value":"鋼管ビーム"},{"label":"設置時期","value":"平成後半以降～"},{"label":"所在地","value":"各地（逗子線・大師線など）"}],"bio":"　古い架線柱を置き換えるため増えてきた架線柱ちゃん！　鋼管を組み合わせたスリムな外見は近代的であるが、シルエットは昔の木柱っぽく先祖返りしている気がするのだ！　不思議！\n\n"},{"id":"char_mwnq599b_xkr43","name":"KHK③","subName":"架線柱ちゃん","catchphrase":"京浜電気の架線柱ちゃん","themeColor":"#C34256","iconUrl":"img/chan_thum03.webp","standingUrl":"img/chara_03.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":150,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/03","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_steel","attr_kanto","attr_electric_origin","attr_mwnq2qtp_aymyz","attr_mwnommtl_ya4ku","attr_mwnpqsd9_dsm3a","attr_mwnqdhn2_9nt04","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"かごトラス"},{"label":"設置時期","value":"表記上は1922（大正11）年～"},{"label":"所在地","value":"本線の高架化されてない区間 　 （神奈川～京急新子安など）"}],"bio":"　大正時代から既に百年以上も同じ場所に立っている（はずの）架線柱ちゃん！　昔はもっと背が高かったらしいが不要部分としてパージされてしまい、今の背丈は半分くらい！　むっちゃ頑丈だぞ！\n\n"},{"id":"char_mwnq86ip_qe2i7","name":"KHK④","subName":"架線柱ちゃん","catchphrase":"京浜急行の架線柱ちゃん","themeColor":"#C34256","iconUrl":"img/chan_thum04.webp","standingUrl":"img/chara_04.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":140,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/04","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_kanto","attr_electric_origin","attr_mwnq2qtp_aymyz","attr_concrete","attr_mwnon4si_5vwuv","attr_taper","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"コンクリート柱"},{"label":"ビーム形状","value":"かごトラス"},{"label":"設置時期","value":"1960（昭和35）年前後～"},{"label":"所在地","value":"京急大師線"}],"bio":"　高度成長期から６０年以上は立ってるコンクリート架線柱ちゃん！　見かけが地味過ぎて注目度が低いが大師線の塩浜方面にも同型が立っていたり、230形も余裕でお見送りしている。幼い日の川崎は煤煙と公害の街で、未だにマスクが手放せない。\n\n"},{"id":"char_mwnqar3f_1ykzh","name":"KHK⑤","subName":"架線柱ちゃん","catchphrase":"京浜電気の元鉄塔な架線柱ちゃん","themeColor":"#C34256","iconUrl":"img/chan_thum05.webp","standingUrl":"img/chara_05.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":135,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/05","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_kanto","attr_electric_origin","attr_mwnq2qtp_aymyz","attr_steel","attr_mwnommtl_ya4ku","attr_mwnpqsd9_dsm3a","attr_mwnqdhn2_9nt04","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"平面トラス"},{"label":"設置時期","value":"表記上は1918（大正7）年～"},{"label":"所在地","value":"大師線"}],"bio":"　大正時代から立ってるかもしれない、京急線最古級の架線柱ちゃんだ！　かつては非常に背が高く、送電がメインの門型鉄塔だったが、平成の後半にその役目は終え、高さも半分に切られてしまった・・・\n　川崎が工場地帯として発展する礎を築いたカリスマ的存在だ。"},{"id":"char_mwnqhh0h_o2der","name":"OER①","subName":"架線柱ちゃん","catchphrase":"小田原急行の架線柱ちゃん","themeColor":"#3F7699","iconUrl":"img/chan_thum06.webp","standingUrl":"img/chara_06.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/06","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_kanto","attr_electric_origin","attr_steel","attr_mwnpqsd9_dsm3a","attr_mwnomwop_i7cag","attr_mwnqk3sz_6bln1","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"クロスビーム・かごトラス等"},{"label":"設置時期","value":"1927（昭和2）年"},{"label":"所在地","value":"小田急の高架化していない区間各所（沢山ある！）"}],"bio":"　昭和２年の開業時から立っている鉄架線柱ちゃんだ！　当時はまだ田畑や林野ばかりの所へ怒涛の勢いで数千本の鉄架線柱を建てまくり、開業へ至った小田急の狂乱の歴史を伝える証言者！　そんな感じなので、だいぶ破天荒な性格だぞ！"},{"id":"char_mwnqm46s_hq1k1","name":"ST①","subName":"架線柱ちゃん","catchphrase":"相模鉄道の架線柱ちゃん","themeColor":"#8DC184","iconUrl":"img/chan_thum07.webp","standingUrl":"img/chara_07.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":150,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/07","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_kanto","attr_mwnqnkp2_j7ooc","attr_concrete","attr_non_taper","attr_steam_electrified","attr_mwnon4si_5vwuv","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"コンクリート柱"},{"label":"ビーム形状","value":"Vトラス"},{"label":"設置時期","value":"表記がないので不詳（昭和30年代終盤以降～と推定）"},{"label":"所在地","value":"相鉄本線の各所"}],"bio":"　昭和30年代終盤には同型が存在していたと推定される、相鉄でよく見るタイプの架線柱ちゃんだ！　コンクリート柱に長方形が強めのVトラスビームが渡った姿は平面トラスにも見え、割とクラシックな外観。\n　相鉄線はコンクリ柱の比率が高い。当初木柱を多用し、更新した為か？"},{"id":"char_mwnqr6wh_30ozi","name":"TQ①","subName":"架線柱ちゃん","catchphrase":"東京急行の架線柱ちゃん","themeColor":"#5E5E5D","iconUrl":"img/chan_thum08.webp","standingUrl":"img/chara_08.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":150,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/08","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_kanto","attr_mwnon4si_5vwuv","attr_mwnqsi62_zeegz","attr_steel","attr_electric_origin","attr_mwnpqsd9_dsm3a","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"かごトラス"},{"label":"設置時期","value":"昭和40年代前後（モデルは昭和44年）"},{"label":"所在地","value":"東横線・田園都市線など各所"}],"bio":"　主に昭和40年代前後に東急線各所で立てられた鉄架線柱ちゃんだ！　華奢な外見だが10両編成が行き交う関東有数の通勤ラッシュを上から支えている力強い存在だ！ただ、元は明るいグレーだった筈の姿は色が褪せすぎて錆止色が目立っている。そろそろ塗替えを……"},{"id":"char_mwnqzisg_5are7","name":"TB①","subName":"架線柱ちゃん","catchphrase":"東武鉄道のチャンネル柱ちゃん","themeColor":"#00AEFF","iconUrl":"img/chan_thum09.webp","standingUrl":"img/chara_09.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/09","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_kanto","attr_steel","attr_mwnr0uxe_wzoe3","attr_mwnomwop_i7cag","attr_electric_origin","attr_mwnpqeq4_3raa9","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"クロスビーム"},{"label":"設置時期","value":"電化開業時（モデルは1929(昭和4)年～）"},{"label":"所在地","value":"日光線・新栃木以北　など"}],"bio":"　現在は日光線・新栃木以北などで見られる、昭和初期の開業時から使われている架線柱ちゃんだ！複線タイプのチャンネル柱で細身の外見はまさに「東武」という感じ！　以前はもっと広い範囲で見られたものの、東武は猛烈な勢いで架線柱を植え替えており、だいぶ残存数は減ってきているようで・・・　なお趣味者の間ではこのタイプを「桜田式」と呼ぶことがある。作っていたメーカーが桜田という名前のため。\n\n\n※チャンネル柱とはいわゆる「溝形鋼」で「コ」の字型の鋼材を2本組合せたものです。"},{"id":"char_mwnr3adn_xby75","name":"TB②","subName":"架線柱ちゃん","catchphrase":"東武鉄道の最新型？架線柱ちゃん","themeColor":"#00AEFF","iconUrl":"img/chan_thum10.webp","standingUrl":"img/chara_10.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/10","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_kanto","attr_steel","attr_mwnr0uxe_wzoe3","attr_mwnonm95_u50dw","attr_steam_electrified","attr_mwnpqsd9_dsm3a","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"平面トラス等"},{"label":"設置時期","value":"平成中盤～令和（現在進行系）"},{"label":"所在地","value":"東武線各所"}],"bio":"　路線問わず東武のアチコチで見られる最新型の鉄架線柱ちゃんだ！　だが、構造は古典的。平面トラスだし最初は多少は古いやつかと思ったのに書いてある年は超最近でビックリした。　野田線では未だに電化時の古い柱がそこそこ残っているため、この娘らにより急速な植え替えが進む。\n\n"},{"id":"char_mwnr8nxd_p1d8v","name":"JRE①","subName":"架線柱ちゃん","catchphrase":"東京駅の架線柱ちゃん","themeColor":"#00813B","iconUrl":"img/chan_thum11.webp","standingUrl":"img/chara_11.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/11","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_kanto","attr_mwnonm95_u50dw","attr_mwnr9nxl_hn1ft","attr_steel","attr_pipe","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鋼管柱"},{"label":"ビーム形状","value":"鋼管ビーム"},{"label":"設置時期","value":"平成7年"},{"label":"所在地","value":"中央線東京駅"}],"bio":"　平成初頭のＪＲ東くんが超気合を入れて建てた架線柱ちゃんだ！　中央線東京駅の重層化に合わせ、景観に配慮したシンプルな形状を追求、現在各地に増殖した鋼管架線柱の中では最初期に建てられた一群。　経年で継ぎ目に錆色が浮いてきているのが気になる……"},{"id":"char_mwnre3ke_7ver8","name":"モブ①","subName":"架線柱ちゃん","catchphrase":"遍在するVトラス","themeColor":"#64748B","iconUrl":"img/chan_thum12.webp","standingUrl":"img/chara_12.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/12","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_concrete","attr_kanto","attr_chubu","attr_kansai","attr_taper","attr_non_taper","attr_mwnon4si_5vwuv","attr_mwnonm95_u50dw","attr_mwolhbqm_mmfp6","attr_mwoiz0us_s0xb8","attr_mwok158v_zyzu3"],"specs":[{"label":"柱材質","value":"コンクリート柱"},{"label":"ビーム形状","value":"Vトラス"},{"label":"設置時期","value":"昭和20年代後半～平成～令和（現在進行系）"},{"label":"所在地","value":"全国各地"}],"bio":"　全国各地に似たような型がたくさん植えられたモブ架線柱ちゃんだ！ 会社問わず本当に何処にでも居る！「Ｖトラスラーメンビーム」という長い名前もあるがＶトラスでも通じるはず！　断面がＶ型なのでＶ、という至極単純なネーミングだ！"},{"id":"char_mwnrggb4_ejalo","name":"M①","subName":"架線柱ちゃん","catchphrase":"名鉄のシンプルな架線柱ちゃん","themeColor":"#E31616","iconUrl":"img/chan_thum13.webp","standingUrl":"img/chara_13.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/13","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_chubu","attr_mwnrhbrl_ihqxb","attr_steel","attr_mwnomwop_i7cag","attr_electric_origin","attr_mwnpqsd9_dsm3a","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"クロスビーム"},{"label":"設置時期","value":"1928年"},{"label":"所在地","value":"名古屋本線　稲沢市内（同型は他所にも多数あり）"}],"bio":"　現在の「名鉄」が合併により成立する以前から建つ架線柱ちゃんだ！\n　今回は稲沢市内に立つ「西部」の娘をモデルとしたが、「東部」にも同型と見られる架線柱が相当数見られる！　名鉄の架線柱、付けられている標識の数多すぎじゃない？"},{"id":"char_mwnrqf9e_dqwsn","name":"JRW①","subName":"架線柱ちゃん","catchphrase":"関西の複々線架線柱ちゃん","themeColor":"#1289F6","iconUrl":"img/chan_thum14.webp","standingUrl":"img/chara_14.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/14","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_steel","attr_mwnrjejv_bmrtv","attr_mwnpqeq4_3raa9","attr_kansai","attr_steam_electrified","attr_mwolhk0m_97sy5","attr_mwnomwop_i7cag"],"specs":[{"label":"柱材質","value":"チャンネル鉄柱"},{"label":"ビーム形状","value":"チャンネルビーム"},{"label":"設置時期","value":"昭和9年（表記省略多数）"},{"label":"所在地","value":"東海道線　京都～三宮近辺の各所"}],"bio":"　京阪神の複々線区間に電化当時から立つチャンネル鉄柱ちゃん！　複々線を跨ぐ充分な強度を確保するためか、ビーム部分も柱と同じチャンネル（溝形）構造で作られており、頑丈すぎる作りだ！　昔の人は「T型チャンネルビーム」などと呼んでいたらしく、同じ型が東海道線の東京口にも使われていたものの、平成終盤までに姿を消してしまったため、現在は京阪神地区にしか残っていないと思われる。"},{"id":"char_mwnrtays_0aupq","name":"KHK⑥","subName":"架線柱ちゃん","catchphrase":"ミステリアス架線柱ちゃん","themeColor":"#C34257","iconUrl":"img/chan_thum15.webp","standingUrl":"img/chara_15.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":150,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/15","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_steel","attr_mwnq2qtp_aymyz","attr_kanto","attr_electric_origin","attr_mwnpqsd9_dsm3a","attr_mwnrvqfr_k1oib","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"設置時期","value":"不詳（モデルの表記は昭和47年だが、そんなに新しいハズがなく、明らかにもっと古い）"},{"label":"所在地","value":"八丁畷駅、大師線など"}],"bio":"　いつから立ってるのか不明なのに、今日も本線上に居る架線柱ちゃんだ！　昭和初期の写真に似た容姿が写ってるので推定90歳↑の可能性もあるが、表記年が明らかにデタラメだったり、そもそも書いてなかったり、真実は戦災で焼失してしまったのか？　年齢不詳でも強度が問題なければ使うことができるのだ！"},{"id":"char_mwnrwu9c_4bj2x","name":"KDK①","subName":"架線柱ちゃん","catchphrase":"極太コンクリ架線柱ちゃん","themeColor":"#2563EB","iconUrl":"img/chan_thum16.webp","standingUrl":"img/chara_16.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/16","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwnrjl7n_cpzwr","attr_concrete","attr_mwnrvqfr_k1oib","attr_non_taper","attr_electric_origin","attr_kanto","attr_mwnqdhn2_9nt04","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"コンクリート柱"},{"label":"ビーム形状","value":"Vトラス"},{"label":"設置時期","value":"表記上は1924年～で大正時代だが、昭和（戦前）説もある"},{"label":"所在地","value":"京成八幡～京成中山付近など"}],"bio":"　京成本線の八幡・中山付近などに見られる極太なコンクリート架線柱ちゃん！　表記上は大正時代末期から立ってる事になっているが真偽は？　どちらにしても戦後の量産型コン柱とは異なる古いものには違いないが痛みが目立っており補強用と思しき布？が巻かれている柱も。"},{"id":"char_mwoitnud_km2lo","name":"JRE②","subName":"架線柱ちゃん","catchphrase":"郡山駅のアイドル","themeColor":"#10B981","iconUrl":"img/chan_thum17.webp","standingUrl":"img/chara_17.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/17","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwnr9nxl_hn1ft","attr_steel","attr_mwnon4si_5vwuv","attr_steam_electrified","attr_mwnpqsd9_dsm3a","attr_mwoiyga4_6elxm","attr_mwoiz0us_s0xb8","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"設置時期","value":"昭和35年～"},{"label":"所在地","value":"東北本線郡山駅"}],"bio":"　東北本線郡山駅に電化時から建つ巨大な構造の架線柱ちゃん！（郡山駅構内特殊鉄構構造・電車線路特殊ビーム）　往時は貨物入換等の都合から柱を建てられる場所が少なく、苦肉の策からクレーン状のビームを吊る構造が考案、風圧の影響を抑えるために高さは極力低く抑えた…とされるが、現代でも圧巻の存在感を放つ！"},{"id":"char_mwoj18ol_t6ota","name":"JRE③","subName":"架線柱ちゃん","catchphrase":"おもしろ形状な架線柱","themeColor":"#10B981","iconUrl":"img/chan_thum18.webp","standingUrl":"img/chara_18.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/18","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwnon4si_5vwuv","attr_mwoiyga4_6elxm","attr_mwnr9nxl_hn1ft","attr_concrete","attr_kanto","attr_electric_origin","attr_non_taper","attr_mwolafb6_n7n3f","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"コンクリート柱"},{"label":"ビーム形状","value":"鋼管パイプ"},{"label":"設置時期","value":"昭和47年～"},{"label":"所在地","value":"武蔵野線　新秋津～東所沢"}],"bio":"　武蔵野線新秋津付近で開業時から使われている架線柱ちゃん！　三角形を組み合わせた外観が特徴的。これはパイプビームで、国鉄(当時)が試験的に設置したものとされている。半世紀経過しても健在だ！\n　昔の前面展望をみると、かつては最上部のビームにも電線が通っていたようだが、今は何も付いていない様子。"},{"id":"char_mwoj5maa_bmdk0","name":"Hn①","subName":"架線柱ちゃん","catchphrase":"ウサ耳架線柱","themeColor":"#00813B","iconUrl":"img/chan_thum19.webp","standingUrl":"img/chara_19.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/19","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_electric_origin","attr_steel","attr_kansai","attr_mwnomwop_i7cag","attr_mwnpqeq4_3raa9","attr_mwoli31j_lh95x"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"クロスビームorアングルビーム(更新済)"},{"label":"設置時期","value":"昭和4年～"},{"label":"所在地","value":"阪堺線の専用軌道区間各所"}],"bio":"　阪堺電車でしばしば見られる戦前の鉄架線柱ちゃん！　南海線にも似た形状の古い鉄柱が見られるが、阪堺線のソレは兎の耳のような頂点付近の形状が特徴。阪堺線にはこの他にも古い架線柱が沢山残っており、見どころが多い。\n\n"},{"id":"char_mwojcoyv_p0fi4","name":"SB①","subName":"架線柱ちゃん","catchphrase":"シンプル架線柱","themeColor":"#E9C664","iconUrl":"img/chan_thum20.webp","standingUrl":"img/chara_20.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/20","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwnrk4j7_jpu1v","attr_kanto","attr_mwnonm95_u50dw","attr_non_taper","attr_concrete","attr_mwojlkch_01opv","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"コンクリート柱"},{"label":"ビーム形状","value":"鋼管ビーム"},{"label":"設置時期","value":"平成中盤～（現在進行系）"},{"label":"所在地","value":"西武線の各地"}],"bio":"　最近の西武がアチコチに植えているシンプルな架線柱ちゃん！コンクリ柱に鋼管ビームが付き、ブラケットを吊った仕様が多い。（柱が鋼管柱のバージョンもある）。　休みの日は電車でお出かけ。行先は野球観戦か、長瀞で釣りか……\n\n"},{"id":"char_mwojopoh_hc7r8","name":"SB②","subName":"架線柱ちゃん","catchphrase":"メタリックグレー架線柱","themeColor":"#E9C664","iconUrl":"img/chan_thum21.webp","standingUrl":"img/chara_21.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/21","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwnrk4j7_jpu1v","attr_kanto","attr_mwojlkch_01opv","attr_steel","attr_mwnon4si_5vwuv","attr_mwnpqsd9_dsm3a","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"Vトラス"},{"label":"設置時期","value":"昭和戦後"},{"label":"所在地","value":"西武線の各地"}],"bio":"　西武が1960～1980年代ごろに植えた標準的な鉄架線柱ちゃん！　メタリックグレーのカラーリングは小田急のソレと似た色である。西武は架線柱の植替えに熱心な所があり「王国」時代を知るこれらの架線柱は肩身が狭いようだ・・・。"},{"id":"char_mwoju2z2_99wux","name":"KF①","subName":"架線柱ちゃん","catchphrase":"欧米生まれ、京都育ち。たぶん","themeColor":"#966898","iconUrl":"img/chan_thum22.webp","standingUrl":"img/chara_22.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/22","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_steel","attr_kansai","attr_mwnomwop_i7cag","attr_mwoli31j_lh95x"],"specs":[{"label":"柱材質","value":"鉄柱(ベーツ柱)"},{"label":"設置時期","value":"昭和戦前？"},{"label":"所在地","value":"嵐山本線の各所"}],"bio":"　遅くとも昭和初期に欧米（米国）から輸入された架線柱ちゃん！　……のはずだが、百年近く前の話でよくわからない。戦前から京都の街に立ってるはず。\n　この鉄柱は「ベーツポール」と呼ばれる形状で、かつては全国各地で用いられたようだが、現在の残存数は僅少。ただ、嵐電にはそこそこ健在。ぜひ見に来てね！"},{"id":"char_mwojx7se_iirfa","name":"JRE④/SnR①","subName":"架線柱ちゃん","catchphrase":"カラフル架線柱","themeColor":"#00813B","iconUrl":"img/chan_thum23.webp","standingUrl":"img/chara_23.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/23","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwnon4si_5vwuv","attr_mwnr9nxl_hn1ft","attr_concrete","attr_steam_electrified","attr_non_taper","attr_taper","attr_kanto","attr_mwok158v_zyzu3","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"コンクリート柱"},{"label":"ビーム形状","value":"Vトラス"},{"label":"設置時期","value":"昭和戦後?"},{"label":"所在地","value":"高崎を中心としたJR各線・しなの鉄道の一部"}],"bio":"　碓氷峠で見られるコンクリート柱にカラフルな装飾が成された架線柱ちゃん！滑車式テンションバランサが付いた柱で、重錘位置を分かりやすくする取組と思われるが詳細は不明！（碓氷峠の新線区間ではトンネルが多く、架線を張るのに苦慮した逸話はある）\n　かつては高崎を中心としたJR各線で見られたが、昨今はばね式テンションバランサへの更新で撤去が進んでいる。廃線済の碓氷峠（横川～軽井沢）に残る他、しなの鉄道（軽井沢～信濃追分）などでは現役のものが見られる。"},{"id":"char_mwok44gm_vcq7k","name":"JRE⑤","subName":"架線柱ちゃん","catchphrase":"チョー古い三角鉄柱","themeColor":"#00813B","iconUrl":"img/chan_thum24.webp","standingUrl":"img/chara_24.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/24","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwnr9nxl_hn1ft","attr_kanto","attr_steel","attr_mwnommtl_ya4ku","attr_steam_electrified","attr_mwok629n_978d0","attr_mwoiyga4_6elxm","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱（三角柱）"},{"label":"ビーム形状","value":"クロスビーム"},{"label":"設置時期","value":"大正末期"},{"label":"所在地","value":"青梅線"}],"bio":"　青梅線買収前（私鉄時代）から立ってると思しき架線柱ちゃん！\n　関東圏では非常に珍しい現存する三角鉄柱で、複線の片側にしか立っていないのは単線時代から使ってる証か。相方の柱は木→コンクリと代替わりしていると思われる。着々と植替えが進んでおり、残存数は僅少。見るなら急げ！"},{"id":"char_mwok8dan_idc5w","name":"EER①","subName":"架線柱ちゃん","catchphrase":"砂まみれ架線柱","themeColor":"#10B981","iconUrl":"img/chan_thum25.webp","standingUrl":"img/chara_25.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/25","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_kanto","attr_mwnon4si_5vwuv","attr_mwnonm95_u50dw","attr_concrete","attr_electric_origin","attr_taper","attr_mwoli31j_lh95x"],"specs":[{"label":"柱材質","value":"コンクリート柱"},{"label":"設置時期","value":"昭和末期～平成初期"},{"label":"所在地","value":"江ノ島電鉄（海沿い）"}],"bio":"　江ノ電の海沿いに生えているフツーの電柱……否、架線柱ちゃん！ 　NTTと東電の配線も通り、見かけは市中の電柱そのもの、テーパー柱が用いられている。全体的に砂まみれな色味になっており、大して古くないが痛みは激しい。環境の厳しさが感じられ、現に置き換えペースも早い様子。海沿いは辛いよ。"},{"id":"char_mwokan4k_2lzr7","name":"SY①","subName":"架線柱ちゃん","catchphrase":"三角形な大正娘","themeColor":"#CF4B2F","iconUrl":"img/chan_thum26.webp","standingUrl":"img/chara_26.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/26","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_steel","attr_mwnommtl_ya4ku","attr_mwnrkwqd_h2vm4","attr_kansai","attr_electric_origin","attr_mwolht9z_4c8om"],"specs":[{"label":"柱材質","value":"鉄柱（アングル鉄柱）"},{"label":"ビーム形状","value":"クロスビーム"},{"label":"設置時期","value":"1923（大正12）年"},{"label":"所在地","value":"主に本線の東二見より姫路側、各所"}],"bio":"　山電でしばしば見かける外観が三角形な鉄架線柱ちゃん！　なお、三角鉄柱でなくアングル材を２本組んだアングル鉄柱である。\n　神姫電鉄が明石～姫路を開通させた際設置した大正末期の百年モノ。徐々に植替えは進むが、元の数が多すぎるため、まだ沿線のあちこちで見れる。"},{"id":"char_mwokfkxj_lelko","name":"JRC①","subName":"架線柱ちゃん","catchphrase":"台風にも負けない","themeColor":"#E09C00","iconUrl":"img/chan_thum27.webp","standingUrl":"img/chara_27.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/27","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_steel","attr_mwnrl6il_ea7he","attr_chubu","attr_mwnon4si_5vwuv","attr_steam_electrified","attr_mwnpqsd9_dsm3a","attr_mwnpqeq4_3raa9","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鉄柱"},{"label":"ビーム形状","value":"Vトラス"},{"label":"設置時期","value":"1953（昭和28）年　浜松～名古屋～稲沢、  1955（昭和30）年　稲沢～大垣～米原"},{"label":"所在地","value":"東海道本線（浜松～稲沢～米原）"}],"bio":"　東海道本線の中京地区電化に際し建てられた架線柱ちゃん！ 当時既にコンクリート柱の量産が始まっていたため、鉄製は比較的限られた場所にしか採用されていない。伊勢湾台風では架線柱も甚大な被害を受けたが、鉄柱は倒壊数が極めて少なかった。防御力高し！"},{"id":"char_mwokidrx_k1fim","name":"TOY①","subName":"架線柱ちゃん","catchphrase":"木の架線柱","themeColor":"#84BC6C","iconUrl":"img/chan_thum28.webp","standingUrl":"img/chara_28.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/28","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_chubu","attr_wood","attr_mwnon4si_5vwuv","attr_mwoli31j_lh95x"],"specs":[{"label":"柱材質","value":"木柱"},{"label":"設置時期","value":"不詳（昭和20～40年代前半？）"},{"label":"所在地","value":"渥美線　各地"}],"bio":"　豊橋鉄道に多く残る木製の架線柱ちゃん！　恐らく戦後の物と思われるが、現地の表記がやや曖昧で疑義は残る。木の電柱自体が珍しい現代において、往時に見られた補強方を現在も見ることが出来たりする。"},{"id":"char_mwokkxui_kfa42","name":"OR①","subName":"架線柱ちゃん","catchphrase":"木の架線柱","themeColor":"#0F172A","iconUrl":"img/chan_thum29.webp","standingUrl":"img/chara_29.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/29","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_chubu","attr_wood","attr_mwnon4si_5vwuv","attr_mwoli31j_lh95x"],"specs":[{"label":"柱材質","value":"木柱"},{"label":"設置時期","value":"戦後（昭和24年、電化時推定）"},{"label":"所在地","value":"本線各所"}],"bio":"　終戦から僅か4年後、短期間で電化を果たした大鐵の架線柱ちゃん！　当時の電源開発に対する意気込みが感じられる。恐らく当時の物と思われる木の架線柱が未だ大量に使われており、推定８割以上と思しき木柱率は全国屈指の状況。"},{"id":"char_mwoknzh4_p58fs","name":"KB①","subName":"架線柱ちゃん","catchphrase":"複線化の夢破れた木の架線柱","themeColor":"#F97316","iconUrl":"img/chan_thum30.webp","standingUrl":"img/chara_30.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/30","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_wood","attr_mwnrlwut_28pyy","attr_kansai","attr_mwnomwop_i7cag","attr_electric_origin","attr_mwoli31j_lh95x"],"specs":[{"label":"柱材質","value":"木柱"},{"label":"設置時期","value":"戦前（昭和10年製造、電化営業時から使用）"},{"label":"所在地","value":"粟生線の単線区間"}],"bio":"　神鉄粟生線の木架線柱ちゃん！　恐らく開業時から使用され続けており当時の工場銘板が残る。神鉄では複線化に合わせ架線柱が更新されたが、裏を返せば単線区間は後回し、古いものが残った。\n　近年は単線のまま架線柱更新も行われている様子だが、残存数はまだまだ多い。"},{"id":"char_mwokqnml_l0fvm","name":"OM①","subName":"架線柱ちゃん","catchphrase":"まだまだ残る木の架線柱","themeColor":"#E09C00","iconUrl":"img/chan_thum31.webp","standingUrl":"img/chara_31.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/31","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_wood","attr_kansai","attr_mwnrvqfr_k1oib","attr_steam_electrified","attr_mwoli31j_lh95x"],"specs":[{"label":"柱材質","value":"木柱"},{"label":"設置時期","value":"戦前～戦後？（電化時？かは要調査の必要あり）"},{"label":"所在地","value":"近江鉄道の各所"}],"bio":"　全線の３割弱が「木」架線柱とされ、関西圏の鉄道では最も木架線柱が残存している近江鉄道の架線柱ちゃん！　とはいえコンクリ柱への更新は日々進められ数は減ってきている。電化時期は戦前～戦後に跨っており、全てが当初から使われているかは不明。\n※このほか、彦根近辺にはレール材を用いた架線柱があり、そちらは電化時のものと思われる。\n\n"},{"id":"char_mwoksgd5_0xck6","name":"KTR①","subName":"架線柱ちゃん","catchphrase":"焦茶色の鋼管柱","themeColor":"#C51863","iconUrl":"img/chan_thum32.webp","standingUrl":"img/chara_32.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/32","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwnrmb9x_ofc3v","attr_concrete","attr_kanto","attr_mwnonm95_u50dw","attr_electric_origin","attr_pipe","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"鋼管柱"},{"label":"ビーム形状","value":"鋼管ビーム"},{"label":"設置時期","value":"平成～"},{"label":"所在地","value":"京王線（井の頭線）各所"}],"bio":"　京王線（井の頭線）各所でよく見かける焦茶色の鋼管柱ちゃん！　古いものは設置から約四半世紀は経過し、沿線風景に馴染んできた。\n　裏を返せば、彼女に置き換えられた架線柱はどんな形だったのか？　これを研究すれば京王の架線柱がよく分かるはずなのだが・・・"},{"id":"char_mwokvut3_yr39j","name":"JRE⑥","subName":"架線柱ちゃん","catchphrase":"緑色の鋼管ビーム、雪国仕様","themeColor":"#00813B","iconUrl":"img/chan_thum33.webp","standingUrl":"img/chara_33.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/33","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwoiyga4_6elxm","attr_mwnr9nxl_hn1ft","attr_concrete","attr_mwok158v_zyzu3","attr_mwnon4si_5vwuv","attr_steam_electrified","attr_taper","attr_mwolafb6_n7n3f","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"コンクリート柱"},{"label":"ビーム形状","value":"鋼管ビーム"},{"label":"設置時期","value":"昭和42（1967）年～（昭和40年頃から試用）"},{"label":"所在地","value":"上越線など"}],"bio":"　上越線の新潟側でよく見かける、緑色の鋼管ビームなコンクリ柱ちゃん！　国鉄ご自慢の雪に負けない構造を突き詰めており、雪が積もらず（すぐ落下するため）豪雪に強い。\n　昭和42年・上越線複線化の頃に本格導入とそこそこ古く、当時の技術では複線程度しか跨げなかったため、広い駅構内には立っていない。それら弱点を克服し、汎用性を上げた新型架線柱が平成年代中頃から登場、植替えが徐々に進んでいる。\n"},{"id":"char_mwokywbx_uqyhz","name":"JRE⑦","subName":"架線柱ちゃん","catchphrase":"シンプルＨ鋼柱","themeColor":"#00813B","iconUrl":"img/chan_thum34.webp","standingUrl":"img/chara_34.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/34","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwoiyga4_6elxm","attr_mwnr9nxl_hn1ft","attr_mwok158v_zyzu3","attr_mwnon4si_5vwuv","attr_steam_electrified","attr_steel","attr_mwola27d_aqx8i","attr_mwolhk0m_97sy5"],"specs":[{"label":"柱材質","value":"Ｈ鋼柱"},{"label":"設置時期","value":"昭和59（1967）年4月～"},{"label":"所在地","value":"越後線（主に吉田～柏崎）、弥彦線"}],"bio":"　越後線・弥彦線で見られる緑色のシンプルなＨ鋼柱ちゃん！　国鉄が最も資金的に苦しい時期（末期）に電化したため、極限までコストカット。架線の吊り方も「直接吊架式」が多用され非常にシンプルだ。なお主だった駅構内は通常の方式で吊られている。\n　なぜか流行りの自動車運転ゲーム（FH6）では、日本の電化路線として同型が多用されている。あのゲームって新潟が舞台だったんですか……？"},{"id":"char_mwol1ke2_q4wdu","name":"HQ①","subName":"架線柱ちゃん","catchphrase":"純白の美麗鉄塔","themeColor":"#612F35","iconUrl":"img/chan_thum35.webp","standingUrl":"img/chara_35.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/35","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwnrmmla_i1jxu","attr_steel","attr_kansai","attr_mwnomwop_i7cag","attr_electric_origin","attr_mwol9i3k_0a4um","attr_mwolhk0m_97sy5","attr_mwojlkch_01opv"],"specs":[{"label":"柱材質","value":"鉄柱（鉄塔）"},{"label":"ビーム形状","value":"アングル材ビーム等"},{"label":"設置時期","value":"表記がないので不詳（～昭和戦前のものが多数残存と推測される）"},{"label":"所在地","value":"神戸線など"}],"bio":"　阪急神戸線などで見かける背の高い鉄塔型の架線柱ちゃんだ！\n　純白の塗装が美しいが、大昔（～70年代頃？）は茶系塗装だったらしい。阪急は建てた年を書いておらず生年不詳だが、古写真を見る限りでは戦前から立ってる鉄柱も相当混ざっているものと推測される。クラシックな立ち姿が眩しい！"},{"id":"char_mwol40xj_q1cox","name":"HQ②","subName":"架線柱ちゃん","catchphrase":"スリムな鋼管パイプビーム","themeColor":"#612F35","iconUrl":"img/chan_thum36.webp","standingUrl":"img/chara_36.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/36","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_mwnrmmla_i1jxu","attr_kansai","attr_electric_origin","attr_concrete","attr_mwnon4si_5vwuv","attr_mwolafb6_n7n3f","attr_mwolhk0m_97sy5","attr_mwojlkch_01opv"],"specs":[{"label":"柱材質","value":"コンクリート柱"},{"label":"ビーム形状","value":"鋼管パイプビーム"},{"label":"設置時期","value":"表記がないので不詳（昭和42年前後の梅田改良以降と推定される）"},{"label":"所在地","value":"神戸線など"}],"bio":"　阪急神戸線で見かける白い鋼管パイプビームの架線柱ちゃんだ！　最古のものは設置から半世紀を超えている昭和年代の架線柱だが、古さを感じさせないスマートな外見が印象的。　同時期の同類（鋼管パイプビーム）は降雪地帯以外では採用も少なく、どちらかといえば道路用の支持物に近そうな、割と珍しい形状である。が、採用経緯など詳しい事は現状では一切不明。"},{"id":"char_mwol636y_voscw","name":"HSn①","subName":"架線柱ちゃん","catchphrase":"モダンなチャンネル鉄柱","themeColor":"#485F84","iconUrl":"img/chan_thum37.webp","standingUrl":"img/chara_37.webp","standingUrl2":"","standingTab1Label":"擬人化","standingTab2Label":"架線柱","standingScale1":145,"standingScale2":100,"detailUrl":"https://sites.google.com/view/seasideexp-pole-girls/top/37","detailLabel":"架線柱の写真（ホームページへ飛びます）","attributeIds":["attr_kansai","attr_electric_origin","attr_mwnrmr2m_8uczl","attr_steel","attr_mwnomwop_i7cag","attr_mwnpqeq4_3raa9","attr_mwolhk0m_97sy5","attr_mwojlkch_01opv"],"specs":[{"label":"柱材質","value":"チャンネル鉄柱"},{"label":"ビーム形状","value":"かごトラス"},{"label":"設置時期","value":"昭和6年（昭和3～8年にかけて設置）"},{"label":"所在地","value":"本線（武庫川、香櫨園～打出～芦屋、岩屋～西灘）"}],"bio":"　阪神本線の古くから同じ線形の区間に残るチャンネル鉄柱の架線柱ちゃん！　類似の四角柱と異なり、昔から高層部にビームナシの様子。\n　昭和3～8年に木柱からの更新で植えられ、現代の鉄柱と見劣りしない今風の立ち姿からは、往年のモダニズムすら感じられる。一生六甲おろしを浴びている。"}]}</script>
+
+  <!-- スタンドアロン実行エンジン -->
+  <script>
+    (function () {
+      "use strict";
+function initArchiveViewer(mountEl, initialData, options) {
+    const opts = options || {};
+    let data = initialData;
+    function resolveSiteDefaultViewMode(site) {
+      const m = site && site.defaultViewMode;
+      return (m === "compact" || m === "list") ? m : "grid";
+    }
+
+    const viewState = {
+      selectedAttrIds: [],
+      filterLogic: "OR", // "OR" | "AND"
+      sortOrder: "desc", // "desc" | "asc"
+      viewMode: resolveSiteDefaultViewMode(initialData && initialData.site), // "grid" | "compact" | "list"
+      searchQuery: "",
+      activeCatTabId: "__CLOSED__", // "__CLOSED__" | categoryId
+      modalCharId: null,
+      modalImageTab: 1 // 1 | 2
+    };
+    let lastAttrStructureKey = null;
+
+    function escHtml(str) {
+      return String(str == null ? "" : str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function sanitizeDetailUrl(raw) {
+      const cleaned = String(raw == null ? "" : raw).replace(/[\u0000-\u001F\u007F]/g, "").trim();
+      if (!cleaned) return "";
+      if (/^(?:\/\/|\\)/.test(cleaned)) return "";
+      const schemeMatch = /^([a-zA-Z][a-zA-Z0-9+.-]*):/.exec(cleaned);
+      if (schemeMatch) {
+        if (!/^https?:\/\/[^/\s\\]+/i.test(cleaned)) return "";
+      }
+      return cleaned;
+    }
+
+    function hexToRgbString(hex) {
+      const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "");
+      if (!m) return "0, 174, 255";
+      return parseInt(m[1], 16) + ", " + parseInt(m[2], 16) + ", " + parseInt(m[3], 16);
+    }
+
+    function getContrastTextColor(hex) {
+      const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "");
+      if (!m) return "#FFFFFF";
+      const r = parseInt(m[1], 16) / 255;
+      const g = parseInt(m[2], 16) / 255;
+      const b = parseInt(m[3], 16) / 255;
+      function lin(c) {
+        return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+      }
+      const luminance = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+      return luminance > 0.40 ? "#1B2B44" : "#FFFFFF";
+    }
+
+    function getFallbackAvatar(name, color) {
+      const firstChar = Array.from((name || "?").trim())[0] || "?";
+      const initial = firstChar.toUpperCase();
+      const c = /^#[0-9A-Fa-f]{6}$/.test(color) ? color : "#00AEFF";
+      const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#EDF4FC"/><rect width="200" height="8" fill="' + c + '"/><text x="100" y="122" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="76" fill="#1B2B44">' + escHtml(initial) + "</text></svg>";
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    }
+
+    function getAttributeMap() {
+      const map = {};
+      (data.attributes || []).forEach(function (a) {
+        map[a.id] = a;
+      });
+      return map;
+    }
+
+    function getOrderedCharAttrs(ch) {
+      const ids = Array.isArray(ch && ch.attributeIds) ? ch.attributeIds : [];
+      if (ids.length === 0) return [];
+      const selectedSet = {};
+      for (let i = 0; i < ids.length; i++) {
+        selectedSet[ids[i]] = true;
+      }
+      const attrs = data.attributes || [];
+      const categories = Array.isArray(data.attributeCategories) && data.attributeCategories.length > 0
+        ? data.attributeCategories
+        : null;
+      if (!categories) {
+        return attrs.filter(function (a) { return Boolean(selectedSet[a.id]); });
+      }
+      const catOrderMap = {};
+      categories.forEach(function (cat, idx) {
+        catOrderMap[cat.id] = idx;
+      });
+      const buckets = categories.map(function () { return []; });
+      attrs.forEach(function (a) {
+        if (!selectedSet[a.id]) return;
+        const ci = Object.prototype.hasOwnProperty.call(catOrderMap, a.categoryId) ? catOrderMap[a.categoryId] : 0;
+        buckets[ci].push(a);
+      });
+      const ordered = [];
+      buckets.forEach(function (bucket) {
+        for (let i = 0; i < bucket.length; i++) ordered.push(bucket[i]);
+      });
+      return ordered;
+    }
+
+    function getFilteredCharacters() {
+      const chars = data.characters || [];
+      const attrMap = getAttributeMap();
+      const q = (viewState.searchQuery || "").trim().toLowerCase();
+      const tokens = q ? q.split(/\s+/).filter(Boolean) : [];
+      const selected = viewState.selectedAttrIds;
+      const logic = viewState.filterLogic;
+
+      return chars.filter(function (ch) {
+        // 属性フィルター
+        if (selected.length > 0) {
+          const charAttrs = ch.attributeIds || [];
+          if (logic === "AND") {
+            for (let i = 0; i < selected.length; i++) {
+              if (charAttrs.indexOf(selected[i]) === -1) return false;
+            }
+          } else {
+            let matched = false;
+            for (let i = 0; i < selected.length; i++) {
+              if (charAttrs.indexOf(selected[i]) !== -1) {
+                matched = true;
+                break;
+              }
+            }
+            if (!matched) return false;
+          }
+        }
+
+        // キーワード検索（名前・サブテキスト・セリフ・紹介文・スペック・小カテゴリ名／スペース区切りAND対応）
+        if (tokens.length > 0) {
+          const specsText = (ch.specs || [])
+            .map(function (s) { return (s.label || "") + " " + (s.value || ""); })
+            .join(" ");
+          const attrNamesText = (ch.attributeIds || [])
+            .map(function (aid) { return attrMap[aid] ? (attrMap[aid].name || "") : ""; })
+            .join(" ");
+          const haystack = [
+            ch.name || "",
+            ch.subName || "",
+            ch.catchphrase || "",
+            ch.bio || "",
+            specsText,
+            attrNamesText
+          ].join(" ").toLowerCase();
+          for (let i = 0; i < tokens.length; i++) {
+            if (haystack.indexOf(tokens[i]) === -1) return false;
+          }
+        }
+        return true;
+      });
+    }
+
+    function getFilteredAndSortedCharacters() {
+      const filtered = getFilteredCharacters();
+      return viewState.sortOrder === "desc" ? filtered.slice().reverse() : filtered;
+    }
+
+    const modalTitleId = "ba-modal-title-" + Math.random().toString(36).slice(2, 8);
+
+    // 初回DOM骨格構築
+    mountEl.innerHTML =
+      '<div class="ba-root" data-pattern="grid">' +
+        '<div class="ba-bg-layer"></div>' +
+        '<div class="ba-bg-pattern"></div>' +
+        '<div class="ba-container">' +
+          '<header class="ba-header"></header>' +
+          '<div class="ba-filter-sentinel" aria-hidden="true"></div>' +
+          '<section class="ba-filter-panel" aria-label="キャラクター検索・カテゴリ絞り込み"></section>' +
+          '<main class="ba-grid-area"></main>' +
+          '<footer class="ba-footer"></footer>' +
+        '</div>' +
+        '<div class="ba-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="' + modalTitleId + '" aria-hidden="true" inert>' +
+          '<div class="ba-modal-window"></div>' +
+        '</div>' +
+      '</div>';
+
+    const rootEl = mountEl.querySelector(".ba-root");
+    const headerEl = mountEl.querySelector(".ba-header");
+    const filterSentinelEl = mountEl.querySelector(".ba-filter-sentinel");
+    const filterEl = mountEl.querySelector(".ba-filter-panel");
+    const gridAreaEl = mountEl.querySelector(".ba-grid-area");
+    const footerEl = mountEl.querySelector(".ba-footer");
+    const modalOverlayEl = mountEl.querySelector(".ba-modal-overlay");
+    const modalWindowEl = mountEl.querySelector(".ba-modal-window");
+
+    if (filterSentinelEl && typeof IntersectionObserver === "function") {
+      const stickyObserver = new IntersectionObserver(
+        function (entries) {
+          if (!entries || !entries.length) return;
+          const entry = entries[0];
+          const topThreshold = entry.rootBounds ? (entry.rootBounds.top + 20) : 20;
+          const stuck = !entry.isIntersecting && entry.boundingClientRect.top < topThreshold;
+          filterEl.classList.toggle("is-stuck", stuck);
+        },
+        {
+          root: opts.isEditor ? (mountEl.parentElement || null) : null,
+          threshold: 0
+        }
+      );
+      stickyObserver.observe(filterSentinelEl);
+    }
+
+    function applySiteTheme() {
+      const site = data.site || {};
+      const accent = /^#[0-9A-Fa-f]{6}$/.test(site.accentColor) ? site.accentColor : "#00AEFF";
+      rootEl.style.setProperty("--ba-accent", accent);
+      rootEl.style.setProperty("--ba-accent-rgb", hexToRgbString(accent));
+      rootEl.style.setProperty("--ba-accent-text", getContrastTextColor(accent));
+      rootEl.setAttribute("data-pattern", site.bgPattern || "grid");
+    }
+
+    function renderHeader() {
+      const site = data.site || {};
+      const total = (data.characters || []).length;
+      const counterLabelText = site.counterLabel != null ? String(site.counterLabel) : "キャラクター総数";
+      const hasBadge = Boolean(site.badgeText && String(site.badgeText).trim());
+      function buildHeaderLinkHtml(rawUrl, rawLabel, fallbackLabel, iconPath) {
+        const safeUrl = sanitizeDetailUrl(rawUrl);
+        if (!safeUrl) return "";
+        const labelText = (rawLabel != null && String(rawLabel).trim()) ? String(rawLabel).trim() : fallbackLabel;
+        const isExternal = /^https?:\/\//i.test(safeUrl);
+        const openInNewTab = isExternal || Boolean(opts.isEditor);
+        const arrowPath = isExternal ? "M7 17L17 7M9 7h8v8" : "M5 12h14M13 6l6 6-6 6";
+        return '<a class="ba-home-link" href="' + escHtml(safeUrl) + '"' + (openInNewTab ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' +
+            '<span class="ba-home-link-inner">' +
+              '<svg class="ba-home-link-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="' + iconPath + '"/></svg>' +
+              '<span>' + escHtml(labelText) + '</span>' +
+              '<svg class="ba-home-link-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="' + arrowPath + '"/></svg>' +
+            '</span>' +
+          '</a>';
+      }
+      const homeLinkHtml = buildHeaderLinkHtml(
+        site.homeUrl,
+        site.homeLabel,
+        "トップページへ",
+        "M3 10.5L12 3l9 7.5M5 9.5V20h5v-6h4v6h5V9.5"
+      );
+      const homeLink2Html = buildHeaderLinkHtml(
+        site.homeUrl2,
+        site.homeLabel2,
+        "関連リンク",
+        "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+      );
+      const badgeRowHtml = (hasBadge || homeLinkHtml || homeLink2Html)
+        ? '<div class="ba-badge-wrap">' +
+            (hasBadge ? '<div class="ba-badge"><span>' + escHtml(site.badgeText) + '</span></div>' : '') +
+            homeLinkHtml +
+            homeLink2Html +
+          '</div>'
+        : '';
+      headerEl.innerHTML =
+        '<div class="ba-header-inner">' +
+          '<div>' +
+            badgeRowHtml +
+            '<h1 class="ba-title">' + escHtml((site.title && site.title.trim()) ? site.title : "キャラクターアーカイブ") + '</h1>' +
+            (site.subtitle ? '<p class="ba-subtitle">' + escHtml(site.subtitle) + '</p>' : '') +
+          '</div>' +
+          '<div class="ba-header-meta">' +
+            '<div class="ba-counter-box">' +
+              (counterLabelText.trim() ? '<div class="ba-counter-label">' + escHtml(counterLabelText) + '</div>' : '') +
+              '<div class="ba-counter-value">' + String(total).padStart(2, "0") + '<small>名</small></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function ensureFilterPanelSkeleton() {
+      if (filterEl.querySelector(".ba-search-input")) return;
+      filterEl.innerHTML =
+        '<div class="ba-filter-top">' +
+          '<div class="ba-search-wrap">' +
+            '<svg class="ba-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M20 20l-3.5-3.5"/></svg>' +
+            '<input type="text" class="ba-search-input" placeholder="検索ワードを入力" value="" aria-label="キャラクター検索" />' +
+            '<button type="button" class="ba-search-clear" title="検索をクリア" aria-label="検索をクリア" hidden>×</button>' +
+          '</div>' +
+          '<div class="ba-filter-controls">' +
+            '<div class="ba-logic-toggle" role="group" aria-label="複数カテゴリの一致条件">' +
+              '<button type="button" class="ba-logic-btn" data-logic="OR" title="いずれかのカテゴリに一致 (OR)">OR</button>' +
+              '<button type="button" class="ba-logic-btn" data-logic="AND" title="すべてのカテゴリに一致 (AND)">AND</button>' +
+            '</div>' +
+            '<div class="ba-sort-toggle" role="group" aria-label="表示順の切り替え">' +
+              '<button type="button" class="ba-sort-btn" data-sort="desc" title="登録が新しい順（降順）">降順</button>' +
+              '<button type="button" class="ba-sort-btn" data-sort="asc" title="登録順（昇順）">昇順</button>' +
+            '</div>' +
+            '<div class="ba-view-toggle" role="group" aria-label="表示密度の切り替え">' +
+              '<button type="button" class="ba-view-btn" data-view-mode="grid" title="標準グリッド表示" aria-label="標準グリッド表示">' +
+                '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="9" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="1.5" y="9" width="5.5" height="5.5" rx="1"/><rect x="9" y="9" width="5.5" height="5.5" rx="1"/></svg>' +
+                '<span class="ba-view-btn-label">標準</span>' +
+              '</button>' +
+              '<button type="button" class="ba-view-btn" data-view-mode="compact" title="コンパクトアイコン表示" aria-label="コンパクトアイコン表示">' +
+                '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="1" y="1" width="3.6" height="3.6" rx="0.8"/><rect x="6.2" y="1" width="3.6" height="3.6" rx="0.8"/><rect x="11.4" y="1" width="3.6" height="3.6" rx="0.8"/><rect x="1" y="6.2" width="3.6" height="3.6" rx="0.8"/><rect x="6.2" y="6.2" width="3.6" height="3.6" rx="0.8"/><rect x="11.4" y="6.2" width="3.6" height="3.6" rx="0.8"/><rect x="1" y="11.4" width="3.6" height="3.6" rx="0.8"/><rect x="6.2" y="11.4" width="3.6" height="3.6" rx="0.8"/><rect x="11.4" y="11.4" width="3.6" height="3.6" rx="0.8"/></svg>' +
+                '<span class="ba-view-btn-label">アイコン</span>' +
+              '</button>' +
+              '<button type="button" class="ba-view-btn" data-view-mode="list" title="リスト表示" aria-label="リスト表示">' +
+                '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="1.5" y="2" width="3" height="3" rx="0.7"/><rect x="6" y="2.5" width="8.5" height="2" rx="0.7"/><rect x="1.5" y="6.5" width="3" height="3" rx="0.7"/><rect x="6" y="7" width="8.5" height="2" rx="0.7"/><rect x="1.5" y="11" width="3" height="3" rx="0.7"/><rect x="6" y="11.5" width="8.5" height="2" rx="0.7"/></svg>' +
+                '<span class="ba-view-btn-label">リスト</span>' +
+              '</button>' +
+            '</div>' +
+            '<div class="ba-result-count"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ba-attr-bar"></div>';
+    }
+
+    function renderFilterPanel() {
+      ensureFilterPanelSkeleton();
+
+      // 存在しない属性IDが選択状態に残っていたら除去
+      const attrMap = getAttributeMap();
+      viewState.selectedAttrIds = viewState.selectedAttrIds.filter(function (id) {
+        return Boolean(attrMap[id]);
+      });
+
+      const filtered = getFilteredCharacters();
+      const total = (data.characters || []).length;
+      const allActive = viewState.selectedAttrIds.length === 0;
+
+      const categories = Array.isArray(data.attributeCategories) && data.attributeCategories.length > 0
+        ? data.attributeCategories
+        : null;
+
+      function renderAttrBtn(attr) {
+        const isActive = viewState.selectedAttrIds.indexOf(attr.id) !== -1;
+        const c = /^#[0-9A-Fa-f]{6}$/.test(attr.color) ? attr.color : "#00AEFF";
+        const tc = getContrastTextColor(c);
+        return '<button type="button" class="ba-attr-btn ' + (isActive ? "is-active" : "") + '" data-attr-id="' + escHtml(attr.id) + '" aria-pressed="' + (isActive ? "true" : "false") + '" style="--btn-color:' + c + ';--btn-text:' + tc + '">' +
+          '<span class="ba-attr-dot"></span>' +
+          '<span>' + escHtml(attr.name) + '</span>' +
+        '</button>';
+      }
+
+      function renderActiveFiltersBar() {
+        if (viewState.selectedAttrIds.length === 0) return "";
+        const selectedAttrs = getOrderedCharAttrs({ attributeIds: viewState.selectedAttrIds });
+        if (!selectedAttrs.length) return "";
+        const chipsHtml = selectedAttrs.map(function (attr) {
+          const c = /^#[0-9A-Fa-f]{6}$/.test(attr.color) ? attr.color : "#00AEFF";
+          const tc = getContrastTextColor(c);
+          return '<button type="button" class="ba-active-chip" data-attr-id="' + escHtml(attr.id) + '" style="--chip-color:' + c + ';--chip-text:' + tc + '" title="クリックして解除">' +
+            '<span>' + escHtml(attr.name) + '</span>' +
+            '<span class="ba-active-chip-x" aria-hidden="true">×</span>' +
+          '</button>';
+        }).join("");
+        return '<div class="ba-active-filters" aria-label="選択中の絞り込み条件">' +
+          '<span class="ba-active-filters-label">選択中:</span>' +
+          chipsHtml +
+          '<button type="button" class="ba-active-clear" data-attr-id="__ALL__">すべて解除</button>' +
+        '</div>';
+      }
+
+      const structureParts = [];
+      let attrBarHtml = "";
+      if (categories) {
+        const catIdSet = {};
+        categories.forEach(function (cat) { catIdSet[cat.id] = true; });
+        const fallbackCatId = categories[0].id;
+        const grouped = {};
+        categories.forEach(function (cat) { grouped[cat.id] = []; });
+        (data.attributes || []).forEach(function (attr) {
+          const cid = (attr.categoryId && catIdSet[attr.categoryId]) ? attr.categoryId : fallbackCatId;
+          grouped[cid].push(attr);
+        });
+
+        const nonEmptyCats = categories.filter(function (cat) {
+          return (grouped[cat.id] || []).length > 0;
+        });
+
+        if (nonEmptyCats.length > 0) {
+          if (viewState.activeCatTabId && viewState.activeCatTabId !== "__CLOSED__") {
+            const exists = nonEmptyCats.some(function (cat) { return cat.id === viewState.activeCatTabId; });
+            if (!exists) {
+              viewState.activeCatTabId = "__CLOSED__";
+            }
+          } else {
+            viewState.activeCatTabId = "__CLOSED__";
+          }
+        } else {
+          viewState.activeCatTabId = "__CLOSED__";
+        }
+
+        let tabsHtml =
+          '<button type="button" class="ba-cat-tab is-all ' + (allActive ? "is-active" : "") + '" data-attr-id="__ALL__" aria-pressed="' + (allActive ? "true" : "false") + '">' +
+            '<span>すべて</span>' +
+          '</button>';
+        let activeTrayHtml = "";
+
+        nonEmptyCats.forEach(function (cat) {
+          const list = grouped[cat.id] || [];
+          const catTitle = (cat.name && cat.name.trim()) ? cat.name : "大カテゴリ";
+          let selInCat = 0;
+          list.forEach(function (a) {
+            if (viewState.selectedAttrIds.indexOf(a.id) !== -1) selInCat++;
+          });
+          const isOpen = viewState.activeCatTabId === cat.id;
+          const badgeText = selInCat > 0 ? (selInCat + "/" + list.length) : String(list.length);
+          structureParts.push(cat.id + ":" + catTitle + ":" + selInCat + "=" + list.map(function (a) { return a.id + "|" + a.name + "|" + a.color; }).join(","));
+
+          tabsHtml +=
+            '<button type="button" class="ba-cat-tab ' + (isOpen ? "is-open " : "") + (selInCat > 0 ? "has-selected" : "") + '" data-cat-tab="' + escHtml(cat.id) + '" aria-expanded="' + (isOpen ? "true" : "false") + '">' +
+              '<span>' + escHtml(catTitle) + '</span>' +
+              '<span class="ba-cat-tab-badge">' + escHtml(badgeText) + '</span>' +
+              '<span class="ba-cat-tab-chevron" aria-hidden="true">▾</span>' +
+            '</button>';
+
+          if (isOpen) {
+            activeTrayHtml =
+              '<div class="ba-cat-tray" role="region" aria-label="' + escHtml(catTitle) + 'の小カテゴリ">' +
+                list.map(renderAttrBtn).join("") +
+              '</div>';
+          }
+        });
+
+        attrBarHtml =
+          '<div class="ba-cat-tabs" role="group" aria-label="大カテゴリ切り替え">' + tabsHtml + '</div>' +
+          activeTrayHtml +
+          renderActiveFiltersBar();
+      } else {
+        let flatHtml =
+          '<button type="button" class="ba-attr-btn is-all ' + (allActive ? "is-active" : "") + '" data-attr-id="__ALL__" aria-pressed="' + (allActive ? "true" : "false") + '">' +
+            '<span>すべて</span>' +
+          '</button>';
+        (data.attributes || []).forEach(function (attr) {
+          structureParts.push(attr.id + "|" + attr.name + "|" + attr.color);
+          flatHtml += renderAttrBtn(attr);
+        });
+        attrBarHtml = '<div class="ba-cat-tabs">' + flatHtml + '</div>' + renderActiveFiltersBar();
+      }
+
+      // <input> 自体は破棄せず、クリア/リセット等のプログラム変更時のみ値を同期（IME入力中断を防止）
+      const searchInput = filterEl.querySelector(".ba-search-input");
+      if (searchInput && searchInput.value !== viewState.searchQuery) {
+        searchInput.value = viewState.searchQuery;
+      }
+      const clearBtn = filterEl.querySelector(".ba-search-clear");
+      if (clearBtn) {
+        clearBtn.hidden = !viewState.searchQuery;
+      }
+
+      filterEl.querySelectorAll(".ba-logic-btn").forEach(function (btn) {
+        const isActive = (btn.getAttribute("data-logic") || "OR") === viewState.filterLogic;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      filterEl.querySelectorAll(".ba-sort-btn").forEach(function (btn) {
+        const isActive = (btn.getAttribute("data-sort") || "desc") === viewState.sortOrder;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      filterEl.querySelectorAll(".ba-view-btn").forEach(function (btn) {
+        const isActive = (btn.getAttribute("data-view-mode") || "grid") === viewState.viewMode;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      const countEl = filterEl.querySelector(".ba-result-count");
+      if (countEl) {
+        countEl.innerHTML = '表示: <strong>' + filtered.length + '</strong> / ' + total + ' 名';
+      }
+
+      const attrBarEl = filterEl.querySelector(".ba-attr-bar");
+      if (attrBarEl) {
+        const nextKey = String(viewState.activeCatTabId || "") + "##" + viewState.selectedAttrIds.join(",") + "##" + structureParts.join(";;");
+        if (lastAttrStructureKey !== nextKey || !attrBarEl.firstElementChild) {
+          const activeEl = document.activeElement;
+          let focusRestore = null;
+          if (activeEl && attrBarEl.contains(activeEl)) {
+            if (activeEl.hasAttribute("data-cat-tab")) {
+              focusRestore = { kind: "catTab", val: activeEl.getAttribute("data-cat-tab") };
+            } else if (activeEl.classList.contains("ba-active-chip")) {
+              const prevChips = Array.prototype.slice.call(attrBarEl.querySelectorAll(".ba-active-chip"));
+              focusRestore = { kind: "activeChip", idx: Math.max(0, prevChips.indexOf(activeEl)) };
+            } else if (activeEl.classList.contains("ba-active-clear")) {
+              focusRestore = { kind: "activeClear" };
+            } else if (activeEl.classList.contains("ba-attr-btn") || activeEl.classList.contains("ba-cat-tab")) {
+              focusRestore = { kind: "attrBtn", val: activeEl.getAttribute("data-attr-id") };
+            }
+          }
+          lastAttrStructureKey = nextKey;
+          attrBarEl.innerHTML = attrBarHtml;
+          if (focusRestore) {
+            let matched = null;
+            if (focusRestore.kind === "catTab" && focusRestore.val) {
+              matched = Array.prototype.find.call(attrBarEl.querySelectorAll("[data-cat-tab]"), function (b) {
+                return b.getAttribute("data-cat-tab") === focusRestore.val;
+              });
+            } else if (focusRestore.kind === "activeChip") {
+              const nextChips = attrBarEl.querySelectorAll(".ba-active-chip");
+              if (nextChips.length > 0) {
+                matched = nextChips[Math.min(focusRestore.idx, nextChips.length - 1)];
+              } else {
+                matched = attrBarEl.querySelector('[data-attr-id="__ALL__"]');
+              }
+            } else if (focusRestore.kind === "activeClear") {
+              matched = attrBarEl.querySelector('[data-attr-id="__ALL__"]');
+            } else if (focusRestore.kind === "attrBtn" && focusRestore.val) {
+              matched = Array.prototype.find.call(attrBarEl.querySelectorAll(".ba-attr-btn, .ba-cat-tab[data-attr-id]"), function (b) {
+                return b.getAttribute("data-attr-id") === focusRestore.val;
+              });
+            }
+            if (matched) {
+              try { matched.focus({ preventScroll: true }); } catch (e) {}
+            }
+          }
+        }
+      }
+    }
+
+    function renderGrid() {
+      const filtered = getFilteredAndSortedCharacters();
+      const attrMap = getAttributeMap();
+
+      const totalChars = (data.characters || []).length;
+      if (filtered.length === 0) {
+        if (totalChars === 0) {
+          gridAreaEl.innerHTML =
+            '<div class="ba-empty">' +
+              '<p class="ba-empty-title">キャラクターが登録されていません</p>' +
+              '<p style="margin:0;font-size:13px;">' +
+                (opts.isEditor ? '左サイドバーの「＋ 新規キャラ」からキャラクターを追加してください。' : '現在表示できるキャラクターデータがありません。') +
+              '</p>' +
+            '</div>';
+          return;
+        }
+        gridAreaEl.innerHTML =
+          '<div class="ba-empty">' +
+            '<p class="ba-empty-title">条件に一致するキャラクターが見つかりません</p>' +
+            '<p style="margin:0;font-size:13px;">選択中のカテゴリや検索キーワードを変更してみてください。</p>' +
+            ((viewState.selectedAttrIds.length > 0 || viewState.searchQuery)
+              ? '<button type="button" class="ba-empty-btn" data-reset-filter="1">絞り込みをすべて解除</button>'
+              : '') +
+          '</div>';
+        return;
+      }
+
+      const registeredIndexMap = {};
+      (data.characters || []).forEach(function (c, i) {
+        registeredIndexMap[c.id] = i + 1;
+      });
+
+      const viewMode = (viewState.viewMode === "compact" || viewState.viewMode === "list") ? viewState.viewMode : "grid";
+      let cardsHtml = '<div class="ba-grid is-view-' + viewMode + '">';
+      filtered.forEach(function (ch, idx) {
+        const regNo = registeredIndexMap[ch.id] || (idx + 1);
+        const noText = "NO." + String(regNo).padStart(2, "0");
+        const color = /^#[0-9A-Fa-f]{6}$/.test(ch.themeColor) ? ch.themeColor : "#00AEFF";
+        const rawIcon = (ch.iconUrl && ch.iconUrl.trim()) ? ch.iconUrl.trim() : "";
+        const imgSrc = rawIcon || getFallbackAvatar(ch.name, color);
+        const fallback = getFallbackAvatar(ch.name, color);
+        const charTitle = ch.name || "名称未設定";
+
+        let tagsHtml = "";
+        if (viewMode !== "compact") {
+          getOrderedCharAttrs(ch).forEach(function (attr) {
+            const tc = /^#[0-9A-Fa-f]{6}$/.test(attr.color) ? attr.color : "#64748B";
+            tagsHtml += '<span class="ba-tag-pill" style="--tag-color:' + tc + ';--tag-text:' + getContrastTextColor(tc) + '">' + escHtml(attr.name) + '</span>';
+          });
+        }
+
+        const thumbHtml =
+          '<span class="ba-card-thumb">' +
+            '<span class="ba-card-thumb-frame">' +
+              '<img src="' + escHtml(imgSrc) + '" alt="' + escHtml(charTitle) + '" loading="lazy" onerror="this.onerror=null;this.src=\'' + escHtml(fallback) + '\';" />' +
+            '</span>' +
+          '</span>';
+
+        let bodyHtml = "";
+        if (viewMode === "compact") {
+          bodyHtml =
+            '<span class="ba-card-body">' +
+              '<span class="ba-card-name">' + escHtml(charTitle) + '</span>' +
+            '</span>';
+        } else if (viewMode === "list") {
+          const catchHtml = (ch.catchphrase && ch.catchphrase.trim())
+            ? '<span class="ba-card-catch">' + escHtml(ch.catchphrase) + '</span>'
+            : '';
+          bodyHtml =
+            '<span class="ba-card-body">' +
+              '<span class="ba-card-list-main">' +
+                '<span class="ba-card-meta-row">' +
+                  '<span class="ba-card-no">' + escHtml(noText) + '</span>' +
+                  (ch.subName ? '<span class="ba-card-sub">' + escHtml(ch.subName) + '</span>' : '') +
+                '</span>' +
+                '<span class="ba-card-name">' + escHtml(charTitle) + '</span>' +
+                catchHtml +
+              '</span>' +
+              (tagsHtml ? '<span class="ba-card-tags">' + tagsHtml + '</span>' : '') +
+            '</span>';
+        } else {
+          bodyHtml =
+            '<span class="ba-card-body">' +
+              '<span class="ba-card-meta-row">' +
+                '<span class="ba-card-no">' + escHtml(noText) + '</span>' +
+                (ch.subName ? '<span class="ba-card-sub">' + escHtml(ch.subName) + '</span>' : '') +
+              '</span>' +
+              '<span class="ba-card-name">' + escHtml(charTitle) + '</span>' +
+              (tagsHtml ? '<span class="ba-card-tags">' + tagsHtml + '</span>' : '') +
+            '</span>';
+        }
+
+        cardsHtml +=
+          '<button type="button" class="ba-card" data-char-id="' + escHtml(ch.id) + '" style="--char-color:' + color + '" title="' + escHtml(noText + " " + charTitle) + '">' +
+            thumbHtml +
+            bodyHtml +
+          '</button>';
+      });
+      cardsHtml += '</div>';
+      gridAreaEl.innerHTML = cardsHtml;
+    }
+
+    function renderFooter() {
+      const site = data.site || {};
+      const footerLeft = site.footerText != null ? String(site.footerText) : "";
+      const footerCredit = site.footerCredit != null
+        ? String(site.footerCredit)
+        : "CHARACTER ARCHIVE SYSTEM（Powered by しーさいど）";
+      const hasLeft = Boolean(footerLeft.trim());
+      const hasCredit = Boolean(footerCredit.trim());
+      footerEl.hidden = !hasLeft && !hasCredit;
+      footerEl.innerHTML =
+        '<span>' + escHtml(footerLeft) + '</span>' +
+        (hasCredit ? '<span class="ba-footer-accent">' + escHtml(footerCredit) + '</span>' : '');
+    }
+
+    function getModalNavContext() {
+      const filtered = getFilteredAndSortedCharacters();
+      const allChars = data.characters || [];
+      let list = filtered;
+      let idx = list.findIndex(function (c) { return c.id === viewState.modalCharId; });
+      if (idx === -1) {
+        list = viewState.sortOrder === "desc" ? allChars.slice().reverse() : allChars;
+        idx = list.findIndex(function (c) { return c.id === viewState.modalCharId; });
+      }
+      return { list: list, idx: idx };
+    }
+
+    let lastRenderedModalCharId = null;
+    let lastFocusBeforeModal = null;
+    let scrollLocked = false;
+    let prevScrollOverflow = "";
+    const scrollLockTarget = opts.isEditor ? (mountEl.parentElement || document.body) : document.body;
+
+    function applyClosedModalState() {
+      lastRenderedModalCharId = null;
+      modalOverlayEl.classList.remove("is-open");
+      modalOverlayEl.setAttribute("aria-hidden", "true");
+      modalOverlayEl.setAttribute("inert", "");
+      if (scrollLocked && scrollLockTarget) {
+        scrollLockTarget.style.overflow = prevScrollOverflow;
+        scrollLocked = false;
+      }
+      if (lastFocusBeforeModal && typeof lastFocusBeforeModal.focus === "function" && document.contains(lastFocusBeforeModal)) {
+        try { lastFocusBeforeModal.focus({ preventScroll: true }); } catch (e) {}
+      }
+      lastFocusBeforeModal = null;
+    }
+
+    function renderModal() {
+      if (!viewState.modalCharId) {
+        applyClosedModalState();
+        return;
+      }
+
+      const navCtx = getModalNavContext();
+      const listForNav = navCtx.list;
+      const currentIdx = navCtx.idx;
+      if (currentIdx === -1) {
+        viewState.modalCharId = null;
+        applyClosedModalState();
+        return;
+      }
+
+      const ch = listForNav[currentIdx];
+      const wasOpen = modalOverlayEl.classList.contains("is-open");
+      const isSameChar = lastRenderedModalCharId === ch.id;
+      let focusedControl = null;
+      if (wasOpen && document.activeElement && modalWindowEl.contains(document.activeElement)) {
+        const actEl = document.activeElement;
+        if (actEl.hasAttribute("data-stage-tab")) {
+          focusedControl = { kind: "stageTab", tab: actEl.getAttribute("data-stage-tab") };
+        } else if (actEl.hasAttribute("data-stage-detail-link")) {
+          focusedControl = { kind: "detailLink" };
+        } else if (actEl.hasAttribute("data-nav-dir")) {
+          focusedControl = { kind: "nav", dir: actEl.getAttribute("data-nav-dir") };
+        } else if (actEl.hasAttribute("data-close-modal")) {
+          focusedControl = { kind: "close" };
+        } else if (actEl.hasAttribute("data-edit-char")) {
+          focusedControl = { kind: "edit" };
+        }
+      }
+      const prevInfoEl = modalWindowEl.querySelector(".ba-modal-info");
+      const prevBodyEl = modalWindowEl.querySelector(".ba-modal-body");
+      const prevInfoScrollTop = (isSameChar && prevInfoEl) ? prevInfoEl.scrollTop : 0;
+      const prevBodyScrollTop = (isSameChar && prevBodyEl) ? prevBodyEl.scrollTop : 0;
+
+      if (!wasOpen) {
+        lastFocusBeforeModal = document.activeElement;
+        if (!scrollLocked && scrollLockTarget) {
+          prevScrollOverflow = scrollLockTarget.style.overflow;
+          scrollLockTarget.style.overflow = "hidden";
+          scrollLocked = true;
+        }
+      }
+
+      const site = data.site || {};
+      const color = /^#[0-9A-Fa-f]{6}$/.test(ch.themeColor) ? ch.themeColor : "#00AEFF";
+      const rawIcon = (ch.iconUrl && ch.iconUrl.trim()) ? ch.iconUrl.trim() : "";
+      const rawStanding = (ch.standingUrl && ch.standingUrl.trim()) ? ch.standingUrl.trim() : "";
+      const rawStanding2 = (ch.standingUrl2 && ch.standingUrl2.trim()) ? ch.standingUrl2.trim() : "";
+      const hasStanding = Boolean(rawStanding);
+      const hasStanding2 = Boolean(rawStanding2);
+      const showStageTabs = hasStanding && hasStanding2;
+      const activeImgTab = (showStageTabs && viewState.modalImageTab === 2) ? 2 : 1;
+      const artSrc = showStageTabs
+        ? (activeImgTab === 2 ? rawStanding2 : rawStanding)
+        : (rawStanding || rawStanding2 || rawIcon || getFallbackAvatar(ch.name, color));
+      const useIconFallbackClass = !hasStanding && !hasStanding2;
+      const fallback = getFallbackAvatar(ch.name, color);
+      const scale1Pct = (typeof ch.standingScale1 === "number" && isFinite(ch.standingScale1))
+        ? Math.min(250, Math.max(50, ch.standingScale1))
+        : 100;
+      const scale2Pct = (typeof ch.standingScale2 === "number" && isFinite(ch.standingScale2))
+        ? Math.min(250, Math.max(50, ch.standingScale2))
+        : 100;
+      const isShowingImg2 = showStageTabs ? (activeImgTab === 2) : (!hasStanding && hasStanding2);
+      const activeArtScale = useIconFallbackClass ? 1 : ((isShowingImg2 ? scale2Pct : scale1Pct) / 100);
+
+      function formatNumberBySetting(num) {
+        const fmt = site.modalNumberFormat != null ? String(site.modalNumberFormat) : "// {01}";
+        if (!fmt.trim()) return "";
+        if (/\{(0*1)\}/.test(fmt)) {
+          return fmt.replace(/\{(0*1)\}/g, function (_, token) {
+            return String(num).padStart(token.length, "0");
+          }).trim();
+        }
+        return fmt.trim();
+      }
+      const allChars = data.characters || [];
+      const regIdx = allChars.findIndex(function (c) { return c.id === ch.id; });
+      const modalNumberText = formatNumberBySetting((regIdx !== -1 ? regIdx : currentIdx) + 1);
+      const modalBigNumberText = modalNumberText.replace(/^\/\/\s*/, "");
+      const modalPrefix = site.modalLabel != null ? String(site.modalLabel).trim() : "CHARACTER PROFILE";
+      const modalTopLabelText = [modalPrefix, modalNumberText].filter(Boolean).join(" ");
+
+      let tagsHtml = "";
+      getOrderedCharAttrs(ch).forEach(function (attr) {
+        const tc = /^#[0-9A-Fa-f]{6}$/.test(attr.color) ? attr.color : "#64748B";
+        tagsHtml += '<span class="ba-tag-pill" style="--tag-color:' + tc + ';--tag-text:' + getContrastTextColor(tc) + '">' + escHtml(attr.name) + '</span>';
+      });
+
+      let specsHtml = "";
+      const validSpecs = (ch.specs || []).filter(function (s) {
+        return (s.label && s.label.trim()) || (s.value && s.value.trim());
+      });
+      const specLabelText = site.specSectionLabel != null ? String(site.specSectionLabel) : "SPECIFICATION // DATA";
+      if (validSpecs.length > 0) {
+        specsHtml =
+          '<div>' +
+            (specLabelText.trim() ? '<div class="ba-section-label">' + escHtml(specLabelText) + '</div>' : '') +
+            '<div class="ba-specs-grid">' +
+              validSpecs.map(function (s) {
+                return '<div class="ba-spec-item">' +
+                  '<div class="ba-spec-key">' + escHtml(s.label || "項目") + '</div>' +
+                  '<div class="ba-spec-val">' + escHtml(s.value || "-") + '</div>' +
+                '</div>';
+              }).join("") +
+            '</div>' +
+          '</div>';
+      }
+
+      const prevChar = listForNav.length > 1 ? listForNav[(currentIdx - 1 + listForNav.length) % listForNav.length] : null;
+      const nextChar = listForNav.length > 1 ? listForNav[(currentIdx + 1) % listForNav.length] : null;
+
+      const showEditBtn = Boolean(opts.isEditor && opts.getIsEditMode && opts.getIsEditMode());
+
+      const tab1Fallback = (site.imageTab1Label && site.imageTab1Label.trim()) ? site.imageTab1Label : "画像1";
+      const tab2Fallback = (site.imageTab2Label && site.imageTab2Label.trim()) ? site.imageTab2Label : "画像2";
+      const stageTabsHtml = showStageTabs
+        ? '<div class="ba-stage-tabs" role="tablist" aria-label="表示画像切り替え">' +
+            '<button type="button" role="tab" aria-selected="' + (activeImgTab === 1 ? "true" : "false") + '" class="ba-stage-tab ' + (activeImgTab === 1 ? "is-active" : "") + '" data-stage-tab="1">' +
+              escHtml((ch.standingTab1Label && ch.standingTab1Label.trim()) ? ch.standingTab1Label : tab1Fallback) +
+            '</button>' +
+            '<button type="button" role="tab" aria-selected="' + (activeImgTab === 2 ? "true" : "false") + '" class="ba-stage-tab ' + (activeImgTab === 2 ? "is-active" : "") + '" data-stage-tab="2">' +
+              escHtml((ch.standingTab2Label && ch.standingTab2Label.trim()) ? ch.standingTab2Label : tab2Fallback) +
+            '</button>' +
+          '</div>'
+        : '';
+
+      const safeDetailUrl = sanitizeDetailUrl(ch.detailUrl);
+      const isExternalDetail = /^https?:\/\//i.test(safeDetailUrl);
+      const openDetailInNewTab = isExternalDetail || Boolean(opts.isEditor);
+      const detailArrowPath = isExternalDetail ? "M7 17L17 7M9 7h8v8" : "M5 12h14M13 6l6 6-6 6";
+      const detailLabelFallback = (site.detailLinkLabel && site.detailLinkLabel.trim()) ? site.detailLinkLabel.trim() : "詳しい解説ページを見る";
+      const detailLabelText = (ch.detailLabel && ch.detailLabel.trim()) ? ch.detailLabel.trim() : detailLabelFallback;
+      const stageDetailLinkHtml = safeDetailUrl
+        ? '<a class="ba-stage-detail-link" href="' + escHtml(safeDetailUrl) + '"' + (openDetailInNewTab ? ' target="_blank" rel="noopener noreferrer"' : '') + ' data-stage-detail-link="1">' +
+            '<span class="ba-stage-detail-dot" aria-hidden="true"></span>' +
+            '<span class="ba-stage-detail-text">' + escHtml(detailLabelText) + '</span>' +
+            '<svg class="ba-stage-detail-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="' + detailArrowPath + '"/></svg>' +
+          '</a>'
+        : '';
+
+      const hasBio = Boolean(ch.bio && ch.bio.trim());
+      const bioLabelText = site.bioSectionLabel != null ? String(site.bioSectionLabel) : "PROFILE // OVERVIEW";
+      const bioHtml = hasBio
+        ? '<div>' +
+            (bioLabelText.trim() ? '<div class="ba-section-label">' + escHtml(bioLabelText) + '</div>' : '') +
+            '<p class="ba-bio-text">' + escHtml(ch.bio) + '</p>' +
+          '</div>'
+        : '';
+
+      const charDisplayName = ch.name || "名称未設定";
+      modalWindowEl.style.setProperty("--modal-color", color);
+      modalWindowEl.style.setProperty("--modal-color-text", getContrastTextColor(color));
+      modalWindowEl.innerHTML =
+        '<div class="ba-modal-topbar">' +
+          (modalTopLabelText
+            ? '<div class="ba-modal-top-label"><span class="ba-modal-top-dot"></span><span>' + escHtml(modalTopLabelText) + '</span></div>'
+            : '<div class="ba-modal-top-label"></div>') +
+          '<div class="ba-modal-top-actions">' +
+            (showEditBtn
+              ? '<button type="button" class="ba-modal-edit-btn" data-edit-char="' + escHtml(ch.id) + '">' +
+                  '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 11l6.232-6.232a2.5 2.5 0 113.536 3.536L12.536 14.536a4 4 0 01-1.789 1.033L7 16.5l.931-3.747A4 4 0 019 11z"/></svg>' +
+                  '<span>このキャラを編集</span>' +
+                '</button>'
+              : '') +
+            '<button type="button" class="ba-modal-close" data-close-modal="1" aria-label="閉じる">×</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ba-modal-body">' +
+          '<div class="ba-modal-stage">' +
+            '<div class="ba-modal-stage-bg"></div>' +
+            '<div class="ba-modal-stage-slash"></div>' +
+            '<div class="ba-modal-stage-line"></div>' +
+            '<img class="ba-modal-art ' + (useIconFallbackClass ? "is-icon-fallback" : "") + '" style="--art-scale:' + activeArtScale + '" src="' + escHtml(artSrc) + '" alt="' + escHtml(charDisplayName) + '" />' +
+            stageTabsHtml +
+            stageDetailLinkHtml +
+          '</div>' +
+          '<div class="ba-modal-info">' +
+            '<div class="ba-profile-head">' +
+              '<div class="ba-profile-head-row">' +
+                '<div class="ba-profile-title-col">' +
+                  (ch.subName ? '<div class="ba-profile-sub">' + escHtml(ch.subName) + '</div>' : '') +
+                  '<h2 id="' + modalTitleId + '" class="ba-profile-name">' + escHtml(charDisplayName) + '</h2>' +
+                '</div>' +
+                (modalBigNumberText ? '<div class="ba-profile-big-num" aria-hidden="true">' + escHtml(modalBigNumberText) + '</div>' : '') +
+              '</div>' +
+              (tagsHtml ? '<div class="ba-profile-tags">' + tagsHtml + '</div>' : '') +
+            '</div>' +
+            (ch.catchphrase ? '<div class="ba-quote-box">' + escHtml(ch.catchphrase) + '</div>' : '') +
+            specsHtml +
+            bioHtml +
+          '</div>' +
+        '</div>' +
+        '<div class="ba-modal-footer">' +
+          '<button type="button" class="ba-nav-btn" data-nav-dir="prev" data-nav-id="' + (prevChar ? escHtml(prevChar.id) : "") + '" ' + (prevChar ? "" : "disabled") + '>' +
+            '<span>←</span>' +
+            '<span class="ba-nav-btn-text">' + (prevChar ? escHtml(prevChar.name || "名称未設定") : "前へ") + '</span>' +
+          '</button>' +
+          '<span class="ba-nav-pos">' + (currentIdx + 1) + ' / ' + listForNav.length + '</span>' +
+          '<button type="button" class="ba-nav-btn" data-nav-dir="next" data-nav-id="' + (nextChar ? escHtml(nextChar.id) : "") + '" ' + (nextChar ? "" : "disabled") + '>' +
+            '<span class="ba-nav-btn-text">' + (nextChar ? escHtml(nextChar.name || "名称未設定") : "次へ") + '</span>' +
+            '<span>→</span>' +
+          '</button>' +
+        '</div>';
+
+      const renderedArtImg = modalWindowEl.querySelector(".ba-modal-art");
+      if (renderedArtImg) {
+        let triedIconFallback = useIconFallbackClass;
+        renderedArtImg.onerror = function () {
+          renderedArtImg.style.setProperty("--art-scale", "1");
+          renderedArtImg.classList.add("is-icon-fallback");
+          if (!triedIconFallback && rawIcon && artSrc !== rawIcon) {
+            triedIconFallback = true;
+            renderedArtImg.src = rawIcon;
+            return;
+          }
+          renderedArtImg.onerror = null;
+          if (renderedArtImg.getAttribute("src") !== fallback) {
+            renderedArtImg.src = fallback;
+          }
+        };
+      }
+
+      modalOverlayEl.removeAttribute("inert");
+      modalOverlayEl.classList.add("is-open");
+      modalOverlayEl.setAttribute("aria-hidden", "false");
+      lastRenderedModalCharId = ch.id;
+
+      if (prevInfoScrollTop > 0) {
+        const nextInfoEl = modalWindowEl.querySelector(".ba-modal-info");
+        if (nextInfoEl) nextInfoEl.scrollTop = prevInfoScrollTop;
+      }
+      if (prevBodyScrollTop > 0) {
+        const nextBodyEl = modalWindowEl.querySelector(".ba-modal-body");
+        if (nextBodyEl) nextBodyEl.scrollTop = prevBodyScrollTop;
+      }
+      if (!wasOpen) {
+        const closeBtn = modalWindowEl.querySelector(".ba-modal-close");
+        if (closeBtn) {
+          try { closeBtn.focus({ preventScroll: true }); } catch (e) {}
+        }
+      } else if (focusedControl) {
+        let restoreTarget = null;
+        if (focusedControl.kind === "stageTab") {
+          restoreTarget = modalWindowEl.querySelector('[data-stage-tab="' + String(activeImgTab) + '"]');
+        } else if (focusedControl.kind === "detailLink") {
+          restoreTarget = modalWindowEl.querySelector("[data-stage-detail-link]");
+        } else if (focusedControl.kind === "nav") {
+          restoreTarget = modalWindowEl.querySelector('[data-nav-dir="' + focusedControl.dir + '"]:not([disabled])');
+        } else if (focusedControl.kind === "close") {
+          restoreTarget = modalWindowEl.querySelector("[data-close-modal]");
+        } else if (focusedControl.kind === "edit") {
+          restoreTarget = modalWindowEl.querySelector("[data-edit-char]");
+        }
+        if (restoreTarget && typeof restoreTarget.focus === "function") {
+          try { restoreTarget.focus({ preventScroll: true }); } catch (e) {}
+        }
+      }
+    }
+
+    function updateModalStageImage(nextTab) {
+      if (!viewState.modalCharId) return false;
+      const navCtx = getModalNavContext();
+      const ch = navCtx.list[navCtx.idx];
+      if (!ch) return false;
+      const rawStanding = (ch.standingUrl && ch.standingUrl.trim()) ? ch.standingUrl.trim() : "";
+      const rawStanding2 = (ch.standingUrl2 && ch.standingUrl2.trim()) ? ch.standingUrl2.trim() : "";
+      if (!rawStanding || !rawStanding2) return false;
+
+      const resolvedTab = nextTab === 2 ? 2 : 1;
+      viewState.modalImageTab = resolvedTab;
+
+      const artImg = modalWindowEl.querySelector(".ba-modal-art");
+      if (artImg) {
+        const color = /^#[0-9A-Fa-f]{6}$/.test(ch.themeColor) ? ch.themeColor : "#00AEFF";
+        const fallback = getFallbackAvatar(ch.name, color);
+        const rawIcon = (ch.iconUrl && ch.iconUrl.trim()) ? ch.iconUrl.trim() : "";
+        const nextSrc = resolvedTab === 2 ? rawStanding2 : rawStanding;
+        let triedIconFallback = false;
+        artImg.classList.remove("is-icon-fallback");
+        artImg.onerror = function () {
+          artImg.style.setProperty("--art-scale", "1");
+          artImg.classList.add("is-icon-fallback");
+          if (!triedIconFallback && rawIcon && nextSrc !== rawIcon) {
+            triedIconFallback = true;
+            artImg.src = rawIcon;
+            return;
+          }
+          artImg.onerror = null;
+          if (artImg.getAttribute("src") !== fallback) {
+            artImg.src = fallback;
+          }
+        };
+        const scalePct = resolvedTab === 2
+          ? ((typeof ch.standingScale2 === "number" && isFinite(ch.standingScale2)) ? Math.min(250, Math.max(50, ch.standingScale2)) : 100)
+          : ((typeof ch.standingScale1 === "number" && isFinite(ch.standingScale1)) ? Math.min(250, Math.max(50, ch.standingScale1)) : 100);
+        artImg.style.setProperty("--art-scale", String(scalePct / 100));
+        artImg.src = nextSrc;
+      }
+      modalWindowEl.querySelectorAll("[data-stage-tab]").forEach(function (tabBtn) {
+        const isThis = parseInt(tabBtn.getAttribute("data-stage-tab"), 10) === resolvedTab;
+        tabBtn.setAttribute("aria-selected", isThis ? "true" : "false");
+        tabBtn.classList.toggle("is-active", isThis);
+      });
+      return true;
+    }
+
+    function updateModalArtScale() {
+      if (!viewState.modalCharId) return;
+      const artImg = modalWindowEl.querySelector(".ba-modal-art");
+      if (!artImg || artImg.classList.contains("is-icon-fallback")) return;
+      const navCtx = getModalNavContext();
+      const ch = navCtx.list[navCtx.idx];
+      if (!ch) return;
+      const hasStanding = Boolean(ch.standingUrl && ch.standingUrl.trim());
+      const hasStanding2 = Boolean(ch.standingUrl2 && ch.standingUrl2.trim());
+      if (!hasStanding && !hasStanding2) return;
+      const showStageTabs = hasStanding && hasStanding2;
+      const activeImgTab = (showStageTabs && viewState.modalImageTab === 2) ? 2 : 1;
+      const isShowingImg2 = showStageTabs ? (activeImgTab === 2) : (!hasStanding && hasStanding2);
+      const scalePct = isShowingImg2
+        ? ((typeof ch.standingScale2 === "number" && isFinite(ch.standingScale2)) ? Math.min(250, Math.max(50, ch.standingScale2)) : 100)
+        : ((typeof ch.standingScale1 === "number" && isFinite(ch.standingScale1)) ? Math.min(250, Math.max(50, ch.standingScale1)) : 100);
+      artImg.style.setProperty("--art-scale", String(scalePct / 100));
+    }
+
+    function renderAll() {
+      applySiteTheme();
+      renderHeader();
+      renderFilterPanel();
+      renderGrid();
+      renderFooter();
+      renderModal();
+    }
+
+    // イベント委譲：フィルター＆検索
+    filterEl.addEventListener("click", function (e) {
+      const catTabBtn = e.target.closest("[data-cat-tab]");
+      if (catTabBtn) {
+        const cid = catTabBtn.getAttribute("data-cat-tab");
+        viewState.activeCatTabId = (viewState.activeCatTabId === cid) ? "__CLOSED__" : cid;
+        renderFilterPanel();
+        return;
+      }
+
+      const attrBtn = e.target.closest("[data-attr-id]");
+      if (attrBtn) {
+        const id = attrBtn.getAttribute("data-attr-id");
+        if (id === "__ALL__") {
+          viewState.selectedAttrIds = [];
+        } else {
+          const idx = viewState.selectedAttrIds.indexOf(id);
+          if (idx === -1) {
+            viewState.selectedAttrIds.push(id);
+          } else {
+            viewState.selectedAttrIds.splice(idx, 1);
+          }
+        }
+        renderFilterPanel();
+        renderGrid();
+        return;
+      }
+
+      const logicBtn = e.target.closest(".ba-logic-btn");
+      if (logicBtn) {
+        viewState.filterLogic = logicBtn.getAttribute("data-logic") || "OR";
+        renderFilterPanel();
+        renderGrid();
+        return;
+      }
+
+      const sortBtn = e.target.closest(".ba-sort-btn");
+      if (sortBtn) {
+        viewState.sortOrder = sortBtn.getAttribute("data-sort") === "asc" ? "asc" : "desc";
+        renderFilterPanel();
+        renderGrid();
+        return;
+      }
+
+      const viewBtn = e.target.closest(".ba-view-btn");
+      if (viewBtn) {
+        const nextMode = viewBtn.getAttribute("data-view-mode");
+        viewState.viewMode = (nextMode === "compact" || nextMode === "list") ? nextMode : "grid";
+        renderFilterPanel();
+        renderGrid();
+        return;
+      }
+
+      if (e.target.closest(".ba-search-clear")) {
+        viewState.searchQuery = "";
+        renderFilterPanel();
+        renderGrid();
+        const inp = filterEl.querySelector(".ba-search-input");
+        if (inp) inp.focus();
+      }
+    });
+
+    filterEl.addEventListener("input", function (e) {
+      if (e.target.classList.contains("ba-search-input")) {
+        viewState.searchQuery = e.target.value;
+        renderFilterPanel();
+        renderGrid();
+      }
+    });
+
+    // イベント委譲：キャラカードクリック・空状態リセット
+    gridAreaEl.addEventListener("click", function (e) {
+      const resetBtn = e.target.closest("[data-reset-filter]");
+      if (resetBtn) {
+        viewState.selectedAttrIds = [];
+        viewState.searchQuery = "";
+        renderFilterPanel();
+        renderGrid();
+        return;
+      }
+
+      const card = e.target.closest(".ba-card");
+      if (card) {
+        viewState.modalCharId = card.getAttribute("data-char-id");
+        viewState.modalImageTab = 1;
+        renderModal();
+      }
+    });
+
+    // イベント委譲：モーダル内操作（ドラッグ選択で背景上で離した誤爆を防止）
+    let mouseDownOnBackdrop = false;
+    modalOverlayEl.addEventListener("mousedown", function (e) {
+      mouseDownOnBackdrop = (e.target === modalOverlayEl);
+    });
+
+    modalOverlayEl.addEventListener("click", function (e) {
+      if (e.target === modalOverlayEl) {
+        const shouldClose = mouseDownOnBackdrop;
+        mouseDownOnBackdrop = false;
+        if (shouldClose) {
+          viewState.modalCharId = null;
+          renderModal();
+        }
+        return;
+      }
+      mouseDownOnBackdrop = false;
+
+      if (e.target.closest("[data-close-modal]")) {
+        viewState.modalCharId = null;
+        renderModal();
+        return;
+      }
+
+      const stageTabBtn = e.target.closest("[data-stage-tab]");
+      if (stageTabBtn) {
+        const nextTab = parseInt(stageTabBtn.getAttribute("data-stage-tab"), 10) === 2 ? 2 : 1;
+        if (!updateModalStageImage(nextTab)) {
+          viewState.modalImageTab = nextTab;
+          renderModal();
+        }
+        return;
+      }
+
+      const navBtn = e.target.closest("[data-nav-id]");
+      if (navBtn && !navBtn.disabled) {
+        const targetId = navBtn.getAttribute("data-nav-id");
+        if (targetId) {
+          viewState.modalCharId = targetId;
+          viewState.modalImageTab = 1;
+          renderModal();
+        }
+        return;
+      }
+
+      const editBtn = e.target.closest("[data-edit-char]");
+      if (editBtn && typeof opts.onEditCharacter === "function") {
+        opts.onEditCharacter(editBtn.getAttribute("data-edit-char"));
+      }
+    });
+
+    // キーボード操作（ESCで閉じる・左右キーで前後移動）
+    function onKeyDown(e) {
+      if (e.defaultPrevented || e.isComposing || e.keyCode === 229) return;
+      if (!viewState.modalCharId) return;
+      if (document.querySelector("dialog[open]")) return;
+      const confirmModal = document.getElementById("studio-confirm-modal");
+      if (confirmModal && (confirmModal.tagName === "DIALOG" ? Boolean(confirmModal.open) : !confirmModal.classList.contains("hidden"))) return;
+
+      const activeEl = document.activeElement;
+      if (e.key === "Tab") {
+        const isEditMode = Boolean(opts.isEditor && opts.getIsEditMode && opts.getIsEditMode());
+        const focusInModal = Boolean(activeEl && modalWindowEl.contains(activeEl));
+        if (!isEditMode || focusInModal) {
+          const focusables = Array.prototype.slice.call(
+            modalWindowEl.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')
+          ).filter(function (el) {
+            return el.offsetParent !== null || el.getClientRects().length > 0;
+          });
+          if (focusables.length > 0) {
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+            if (e.shiftKey) {
+              if (!focusInModal || activeEl === first) {
+                e.preventDefault();
+                last.focus();
+              }
+            } else if (!focusInModal || activeEl === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          } else {
+            e.preventDefault();
+          }
+        }
+        return;
+      }
+
+      const tag = (activeEl && activeEl.tagName) || "";
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (activeEl && activeEl.isContentEditable)) {
+        return;
+      }
+
+      if (e.key === "Escape") {
+        viewState.modalCharId = null;
+        renderModal();
+      } else if (
+        (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "Home" || e.key === "End") &&
+        activeEl &&
+        activeEl.getAttribute("role") === "tab" &&
+        activeEl.hasAttribute("data-stage-tab") &&
+        modalWindowEl.contains(activeEl)
+      ) {
+        e.preventDefault();
+        let nextTab = viewState.modalImageTab === 2 ? 1 : 2;
+        if (e.key === "Home") nextTab = 1;
+        if (e.key === "End") nextTab = 2;
+        if (!updateModalStageImage(nextTab)) {
+          viewState.modalImageTab = nextTab;
+          renderModal();
+        }
+        const targetTabBtn = modalWindowEl.querySelector('[data-stage-tab="' + String(nextTab) + '"]');
+        if (targetTabBtn && typeof targetTabBtn.focus === "function") {
+          try { targetTabBtn.focus({ preventScroll: true }); } catch (err) {}
+        }
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        const isEditModeNav = Boolean(opts.isEditor && opts.getIsEditMode && opts.getIsEditMode());
+        if (isEditModeNav && activeEl && activeEl !== document.body && !modalWindowEl.contains(activeEl)) {
+          return;
+        }
+        const navCtx = getModalNavContext();
+        const list = navCtx.list;
+        const idx = navCtx.idx;
+        if (list.length <= 1 || idx === -1) return;
+        e.preventDefault();
+        const nextIdx = e.key === "ArrowRight"
+          ? (idx + 1) % list.length
+          : (idx - 1 + list.length) % list.length;
+        viewState.modalCharId = list[nextIdx].id;
+        viewState.modalImageTab = 1;
+        renderModal();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+
+    renderAll();
+
+    return {
+      updateData: function (newData, updateOpts) {
+        data = newData;
+        if (updateOpts && updateOpts.resetView) {
+          viewState.selectedAttrIds = [];
+          viewState.filterLogic = "OR";
+          viewState.sortOrder = "desc";
+          viewState.viewMode = resolveSiteDefaultViewMode(data.site);
+          viewState.searchQuery = "";
+          viewState.activeCatTabId = "__CLOSED__";
+          viewState.modalCharId = null;
+          viewState.modalImageTab = 1;
+          renderAll();
+          return;
+        }
+        const scope = updateOpts && updateOpts.scope;
+        if (scope === "modalScale") {
+          updateModalArtScale();
+          return;
+        }
+        if (scope === "listAndModal") {
+          if (viewState.viewMode === "list" || (viewState.searchQuery && viewState.searchQuery.trim())) {
+            renderFilterPanel();
+            renderGrid();
+          }
+          renderModal();
+          return;
+        }
+        if (scope === "modalOnly") {
+          if (viewState.searchQuery && viewState.searchQuery.trim()) {
+            renderFilterPanel();
+            renderGrid();
+          }
+          renderModal();
+          return;
+        }
+        if (scope === "siteMeta") {
+          applySiteTheme();
+          renderHeader();
+          renderFooter();
+          return;
+        }
+        if (scope === "siteDefaultView") {
+          viewState.viewMode = resolveSiteDefaultViewMode(data.site);
+          renderFilterPanel();
+          renderGrid();
+          return;
+        }
+        renderAll();
+      },
+      resetViewState: function () {
+        viewState.selectedAttrIds = [];
+        viewState.filterLogic = "OR";
+        viewState.sortOrder = "desc";
+        viewState.viewMode = resolveSiteDefaultViewMode(data.site);
+        viewState.searchQuery = "";
+        viewState.activeCatTabId = "__CLOSED__";
+        viewState.modalCharId = null;
+        viewState.modalImageTab = 1;
+        renderAll();
+      },
+      refreshModal: function () {
+        renderModal();
+      },
+      openCharacter: function (charId) {
+        viewState.modalCharId = charId;
+        viewState.modalImageTab = 1;
+        renderModal();
+      },
+      closeModal: function () {
+        viewState.modalCharId = null;
+        renderModal();
+      }
+    };
+  }
+      document.addEventListener('DOMContentLoaded', function () {
+        try {
+          var dataEl = document.getElementById('char-archive-data');
+          var parsed = JSON.parse(dataEl.textContent);
+          var mountEl = document.getElementById('archive-app');
+          initArchiveViewer(mountEl, parsed, { isEditor: false });
+        } catch (err) {
+          console.error('Archive initialization failed:', err);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
