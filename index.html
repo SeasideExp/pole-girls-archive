@@ -1257,6 +1257,57 @@
   filter: drop-shadow(0 16px 26px rgba(27, 43, 68, 0.22));
   transform: scale(var(--art-scale, 1));
   transform-origin: center center;
+  cursor: zoom-in;
+}
+
+.ba-stage-top-controls {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.ba-stage-zoom-btn {
+  position: relative;
+  flex-shrink: 0;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(20, 34, 56, 0.72);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(10, 22, 42, 0.22);
+  transition: background 0.16s ease, transform 0.16s ease;
+}
+
+.ba-stage-zoom-btn:hover {
+  background: rgba(20, 34, 56, 0.92);
+  transform: scale(1.04);
+}
+
+.ba-stage-zoom-btn:focus-visible {
+  outline: 3px solid var(--modal-color, var(--ba-accent));
+  outline-offset: 2px;
+}
+
+.ba-stage-zoom-btn svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
 }
 
 .ba-modal-art.is-icon-fallback {
@@ -1274,12 +1325,12 @@
 }
 
 .ba-stage-tabs {
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 4;
-  max-width: calc(100% - 24px);
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 auto;
+  pointer-events: auto;
   display: inline-flex;
   align-items: center;
   gap: 3px;
@@ -1608,6 +1659,165 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* ===== Full-Body Image Lightbox (全身拡大ビュー) ===== */
+.ba-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  background: rgba(10, 18, 32, 0.88);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 16px;
+  gap: 10px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  overscroll-behavior: contain;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.ba-lightbox-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.ba-lightbox-topbar {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  color: #FFFFFF;
+}
+
+.ba-lightbox-title {
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.ba-lightbox-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ba-lightbox-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ba-lightbox-tab {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.ba-lightbox-tab.is-active {
+  background: var(--lb-color, var(--ba-accent));
+  color: var(--lb-color-text, #FFFFFF);
+}
+
+.ba-lightbox-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.ba-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.26);
+  transform: rotate(90deg);
+}
+
+.ba-lightbox-stage {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+
+.ba-lightbox-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: min(94vw, 880px);
+  max-height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding: 14px;
+  border-radius: 16px;
+  background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.96) 0%, rgba(236, 244, 252, 0.94) 100%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  transform: scale(0.95);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ba-lightbox-overlay.is-open .ba-lightbox-frame {
+  transform: scale(1);
+}
+
+.ba-lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 148px);
+  max-height: calc(100dvh - 148px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.ba-lightbox-hint {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.72);
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+
 /* モバイル・タブレット向けモーダル調整 */
 @media (max-width: 780px) {
   .ba-container {
@@ -1628,31 +1838,47 @@
     overflow-y: auto;
   }
   .ba-modal-stage {
-    min-height: 220px;
+    min-height: 232px;
     max-height: 360px;
+    padding: 16px 16px 18px;
     border-right: none;
     border-bottom: 1px solid var(--ba-border);
   }
-  .ba-modal-stage:has(.ba-stage-tabs),
-  .ba-modal-stage:has(.ba-stage-detail-link) {
+  .ba-modal-stage:has(.ba-stage-tabs) {
     min-height: 290px;
+    padding-top: 54px;
+  }
+  .ba-modal-stage:has(.ba-stage-detail-link) {
+    min-height: 296px;
+    padding-bottom: 60px;
   }
   .ba-modal-stage:has(.ba-stage-tabs):has(.ba-stage-detail-link) {
     min-height: 336px;
   }
   .ba-modal-art {
-    max-height: 240px;
+    max-height: 248px;
+    transform: scale(min(var(--art-scale, 1), 1));
+  }
+  .ba-modal-stage:has(.ba-stage-detail-link) .ba-modal-art {
+    max-height: 216px;
+  }
+  .ba-modal-stage:has(.ba-stage-tabs) .ba-modal-art {
+    max-height: 212px;
+  }
+  .ba-modal-stage:has(.ba-stage-tabs):has(.ba-stage-detail-link) .ba-modal-art {
+    max-height: 196px;
   }
   .ba-modal-art.is-icon-fallback {
     width: min(200px, 65vw);
     max-height: 200px;
   }
+  .ba-stage-zoom-btn {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
   .ba-stage-tab {
     max-width: 120px;
     padding: 5px 10px;
-  }
-  .ba-modal-stage:has(.ba-stage-tabs):has(.ba-stage-detail-link) .ba-modal-art {
-    max-height: 200px;
   }
   .ba-stage-detail-link {
     padding: 7px 12px 7px 10px;
@@ -1665,6 +1891,17 @@
   }
   .ba-specs-grid {
     grid-template-columns: 1fr;
+  }
+  .ba-lightbox-overlay {
+    padding: 10px 10px 14px;
+  }
+  .ba-lightbox-frame {
+    padding: 10px;
+    border-radius: 14px;
+  }
+  .ba-lightbox-img {
+    max-height: calc(100vh - 132px);
+    max-height: calc(100dvh - 132px);
   }
 }
   </style>
@@ -1695,7 +1932,8 @@ function initArchiveViewer(mountEl, initialData, options) {
       searchQuery: "",
       activeCatTabId: "__CLOSED__", // "__CLOSED__" | categoryId
       modalCharId: null,
-      modalImageTab: 1 // 1 | 2
+      modalImageTab: 1, // 1 | 2
+      lightboxOpen: false
     };
     let lastAttrStructureKey = null;
 
@@ -1859,6 +2097,7 @@ function initArchiveViewer(mountEl, initialData, options) {
         '<div class="ba-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="' + modalTitleId + '" aria-hidden="true" inert>' +
           '<div class="ba-modal-window"></div>' +
         '</div>' +
+        '<div class="ba-lightbox-overlay" role="dialog" aria-modal="true" aria-label="キャラクター全身画像" aria-hidden="true" inert></div>' +
       '</div>';
 
     const rootEl = mountEl.querySelector(".ba-root");
@@ -1869,6 +2108,7 @@ function initArchiveViewer(mountEl, initialData, options) {
     const footerEl = mountEl.querySelector(".ba-footer");
     const modalOverlayEl = mountEl.querySelector(".ba-modal-overlay");
     const modalWindowEl = mountEl.querySelector(".ba-modal-window");
+    const lightboxOverlayEl = mountEl.querySelector(".ba-lightbox-overlay");
 
     if (filterSentinelEl && typeof IntersectionObserver === "function") {
       const stickyObserver = new IntersectionObserver(
@@ -2324,11 +2564,120 @@ function initArchiveViewer(mountEl, initialData, options) {
 
     let lastRenderedModalCharId = null;
     let lastFocusBeforeModal = null;
+    let lastFocusBeforeLightbox = null;
     let scrollLocked = false;
     let prevScrollOverflow = "";
     const scrollLockTarget = opts.isEditor ? (mountEl.parentElement || document.body) : document.body;
 
+    function closeLightbox(restoreFocus) {
+      if (!viewState.lightboxOpen && !lightboxOverlayEl.classList.contains("is-open")) return;
+      viewState.lightboxOpen = false;
+      lightboxOverlayEl.classList.remove("is-open");
+      lightboxOverlayEl.setAttribute("aria-hidden", "true");
+      lightboxOverlayEl.setAttribute("inert", "");
+      if (restoreFocus && lastFocusBeforeLightbox && typeof lastFocusBeforeLightbox.focus === "function" && document.contains(lastFocusBeforeLightbox)) {
+        try { lastFocusBeforeLightbox.focus({ preventScroll: true }); } catch (e) {}
+      }
+      lastFocusBeforeLightbox = null;
+    }
+
+    function renderLightbox() {
+      if (!viewState.lightboxOpen || !viewState.modalCharId) {
+        closeLightbox(false);
+        return;
+      }
+      const navCtx = getModalNavContext();
+      const ch = navCtx.list[navCtx.idx];
+      if (!ch) {
+        closeLightbox(false);
+        return;
+      }
+      const site = data.site || {};
+      const color = /^#[0-9A-Fa-f]{6}$/.test(ch.themeColor) ? ch.themeColor : "#00AEFF";
+      const rawIcon = (ch.iconUrl && ch.iconUrl.trim()) ? ch.iconUrl.trim() : "";
+      const rawStanding = (ch.standingUrl && ch.standingUrl.trim()) ? ch.standingUrl.trim() : "";
+      const rawStanding2 = (ch.standingUrl2 && ch.standingUrl2.trim()) ? ch.standingUrl2.trim() : "";
+      const showTabs = Boolean(rawStanding && rawStanding2);
+      const activeTab = (showTabs && viewState.modalImageTab === 2) ? 2 : 1;
+      const artSrc = showTabs
+        ? (activeTab === 2 ? rawStanding2 : rawStanding)
+        : (rawStanding || rawStanding2 || rawIcon || getFallbackAvatar(ch.name, color));
+      const fallback = getFallbackAvatar(ch.name, color);
+      const charDisplayName = ch.name || "名称未設定";
+      const tab1Fallback = (site.imageTab1Label && site.imageTab1Label.trim()) ? site.imageTab1Label : "画像1";
+      const tab2Fallback = (site.imageTab2Label && site.imageTab2Label.trim()) ? site.imageTab2Label : "画像2";
+      const tab1Label = (ch.standingTab1Label && ch.standingTab1Label.trim()) ? ch.standingTab1Label : tab1Fallback;
+      const tab2Label = (ch.standingTab2Label && ch.standingTab2Label.trim()) ? ch.standingTab2Label : tab2Fallback;
+
+      const tabsHtml = showTabs
+        ? '<div class="ba-lightbox-tabs" role="tablist" aria-label="表示画像切り替え">' +
+            '<button type="button" role="tab" aria-selected="' + (activeTab === 1 ? "true" : "false") + '" class="ba-lightbox-tab ' + (activeTab === 1 ? "is-active" : "") + '" data-lb-tab="1">' + escHtml(tab1Label) + '</button>' +
+            '<button type="button" role="tab" aria-selected="' + (activeTab === 2 ? "true" : "false") + '" class="ba-lightbox-tab ' + (activeTab === 2 ? "is-active" : "") + '" data-lb-tab="2">' + escHtml(tab2Label) + '</button>' +
+          '</div>'
+        : '';
+
+      const wasOpen = lightboxOverlayEl.classList.contains("is-open");
+      let lbFocusKind = null;
+      if (wasOpen && document.activeElement && lightboxOverlayEl.contains(document.activeElement)) {
+        if (document.activeElement.hasAttribute("data-lb-tab")) {
+          lbFocusKind = "tab";
+        } else if (document.activeElement.classList.contains("ba-lightbox-close")) {
+          lbFocusKind = "close";
+        }
+      }
+      lightboxOverlayEl.style.setProperty("--lb-color", color);
+      lightboxOverlayEl.style.setProperty("--lb-color-text", getContrastTextColor(color));
+      lightboxOverlayEl.innerHTML =
+        '<div class="ba-lightbox-topbar">' +
+          '<div class="ba-lightbox-title">' + escHtml(charDisplayName) + '</div>' +
+          '<div class="ba-lightbox-actions">' +
+            tabsHtml +
+            '<button type="button" class="ba-lightbox-close" data-close-lightbox="1" aria-label="全身表示を閉じる">×</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ba-lightbox-stage" data-close-lightbox="1">' +
+          '<div class="ba-lightbox-frame">' +
+            '<img class="ba-lightbox-img" src="' + escHtml(artSrc) + '" alt="' + escHtml(charDisplayName) + ' 全身画像" />' +
+          '</div>' +
+        '</div>' +
+        '<div class="ba-lightbox-hint" data-close-lightbox="1">タップまたは × で閉じる</div>';
+
+      const lbImg = lightboxOverlayEl.querySelector(".ba-lightbox-img");
+      if (lbImg) {
+        let triedIconFallback = (!rawStanding && !rawStanding2);
+        lbImg.onerror = function () {
+          if (!triedIconFallback && rawIcon && artSrc !== rawIcon) {
+            triedIconFallback = true;
+            lbImg.src = rawIcon;
+            return;
+          }
+          lbImg.onerror = null;
+          if (lbImg.getAttribute("src") !== fallback) {
+            lbImg.src = fallback;
+          }
+        };
+      }
+
+      lightboxOverlayEl.removeAttribute("inert");
+      lightboxOverlayEl.classList.add("is-open");
+      lightboxOverlayEl.setAttribute("aria-hidden", "false");
+      if (!wasOpen) {
+        const closeBtn = lightboxOverlayEl.querySelector(".ba-lightbox-close");
+        if (closeBtn) {
+          try { closeBtn.focus({ preventScroll: true }); } catch (e) {}
+        }
+      } else if (lbFocusKind) {
+        const target = (lbFocusKind === "tab" && showTabs)
+          ? lightboxOverlayEl.querySelector('[data-lb-tab="' + String(activeTab) + '"]')
+          : lightboxOverlayEl.querySelector(".ba-lightbox-close");
+        if (target && typeof target.focus === "function") {
+          try { target.focus({ preventScroll: true }); } catch (e) {}
+        }
+      }
+    }
+
     function applyClosedModalState() {
+      closeLightbox(false);
       lastRenderedModalCharId = null;
       modalOverlayEl.classList.remove("is-open");
       modalOverlayEl.setAttribute("aria-hidden", "true");
@@ -2361,11 +2710,18 @@ function initArchiveViewer(mountEl, initialData, options) {
       const ch = listForNav[currentIdx];
       const wasOpen = modalOverlayEl.classList.contains("is-open");
       const isSameChar = lastRenderedModalCharId === ch.id;
+      if (!isSameChar || !viewState.lightboxOpen) {
+        closeLightbox(false);
+      } else {
+        renderLightbox();
+      }
       let focusedControl = null;
       if (wasOpen && document.activeElement && modalWindowEl.contains(document.activeElement)) {
         const actEl = document.activeElement;
         if (actEl.hasAttribute("data-stage-tab")) {
           focusedControl = { kind: "stageTab", tab: actEl.getAttribute("data-stage-tab") };
+        } else if (actEl.hasAttribute("data-open-lightbox")) {
+          focusedControl = { kind: "zoom" };
         } else if (actEl.hasAttribute("data-stage-detail-link")) {
           focusedControl = { kind: "detailLink" };
         } else if (actEl.hasAttribute("data-nav-dir")) {
@@ -2520,8 +2876,14 @@ function initArchiveViewer(mountEl, initialData, options) {
             '<div class="ba-modal-stage-bg"></div>' +
             '<div class="ba-modal-stage-slash"></div>' +
             '<div class="ba-modal-stage-line"></div>' +
-            '<img class="ba-modal-art ' + (useIconFallbackClass ? "is-icon-fallback" : "") + '" style="--art-scale:' + activeArtScale + '" src="' + escHtml(artSrc) + '" alt="' + escHtml(charDisplayName) + '" />' +
-            stageTabsHtml +
+            '<img class="ba-modal-art ' + (useIconFallbackClass ? "is-icon-fallback" : "") + '" style="--art-scale:' + activeArtScale + '" src="' + escHtml(artSrc) + '" alt="' + escHtml(charDisplayName) + '" data-open-lightbox="1" title="クリック / タップで全身を表示" />' +
+            '<div class="ba-stage-top-controls">' +
+              stageTabsHtml +
+              '<button type="button" class="ba-stage-zoom-btn" data-open-lightbox="1" title="全身を拡大表示" aria-label="全身を拡大表示">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path stroke-linecap="round" d="M20 20l-4-4M11 8v6M8 11h6"/></svg>' +
+                '<span>全身</span>' +
+              '</button>' +
+            '</div>' +
             stageDetailLinkHtml +
           '</div>' +
           '<div class="ba-modal-info">' +
@@ -2592,6 +2954,8 @@ function initArchiveViewer(mountEl, initialData, options) {
         let restoreTarget = null;
         if (focusedControl.kind === "stageTab") {
           restoreTarget = modalWindowEl.querySelector('[data-stage-tab="' + String(activeImgTab) + '"]');
+        } else if (focusedControl.kind === "zoom") {
+          restoreTarget = modalWindowEl.querySelector(".ba-stage-zoom-btn");
         } else if (focusedControl.kind === "detailLink") {
           restoreTarget = modalWindowEl.querySelector("[data-stage-detail-link]");
         } else if (focusedControl.kind === "nav") {
@@ -2819,6 +3183,42 @@ function initArchiveViewer(mountEl, initialData, options) {
       const editBtn = e.target.closest("[data-edit-char]");
       if (editBtn && typeof opts.onEditCharacter === "function") {
         opts.onEditCharacter(editBtn.getAttribute("data-edit-char"));
+        return;
+      }
+
+      const openLbTrigger = e.target.closest("[data-open-lightbox]");
+      if (openLbTrigger) {
+        const actEl = document.activeElement;
+        if (openLbTrigger.tagName === "BUTTON") {
+          lastFocusBeforeLightbox = openLbTrigger;
+        } else if (actEl && actEl !== document.body && modalWindowEl.contains(actEl)) {
+          lastFocusBeforeLightbox = actEl;
+        } else {
+          lastFocusBeforeLightbox = modalWindowEl.querySelector(".ba-stage-zoom-btn") || modalWindowEl.querySelector(".ba-modal-close");
+        }
+        viewState.lightboxOpen = true;
+        renderLightbox();
+      }
+    });
+
+    // イベント委譲：全身ライトボックス操作
+    lightboxOverlayEl.addEventListener("click", function (e) {
+      const lbTab = e.target.closest("[data-lb-tab]");
+      if (lbTab) {
+        const nextTab = parseInt(lbTab.getAttribute("data-lb-tab"), 10) === 2 ? 2 : 1;
+        if (!updateModalStageImage(nextTab)) {
+          viewState.modalImageTab = nextTab;
+        }
+        renderLightbox();
+        const activeBtn = lightboxOverlayEl.querySelector('[data-lb-tab="' + String(nextTab) + '"]');
+        if (activeBtn && typeof activeBtn.focus === "function") {
+          try { activeBtn.focus({ preventScroll: true }); } catch (err) {}
+        }
+        return;
+      }
+
+      if (e.target === lightboxOverlayEl || e.target.closest("[data-close-lightbox]")) {
+        closeLightbox(true);
       }
     });
 
@@ -2831,6 +3231,55 @@ function initArchiveViewer(mountEl, initialData, options) {
       if (confirmModal && (confirmModal.tagName === "DIALOG" ? Boolean(confirmModal.open) : !confirmModal.classList.contains("hidden"))) return;
 
       const activeEl = document.activeElement;
+      if (viewState.lightboxOpen) {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          closeLightbox(true);
+          return;
+        }
+        if (e.key === "Tab") {
+          const lbFocusables = Array.prototype.slice.call(
+            lightboxOverlayEl.querySelectorAll('button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+          ).filter(function (el) {
+            return el.offsetParent !== null || el.getClientRects().length > 0;
+          });
+          if (lbFocusables.length > 0) {
+            const firstLb = lbFocusables[0];
+            const lastLb = lbFocusables[lbFocusables.length - 1];
+            const inLb = Boolean(activeEl && lightboxOverlayEl.contains(activeEl));
+            if (e.shiftKey) {
+              if (!inLb || activeEl === firstLb) {
+                e.preventDefault();
+                lastLb.focus();
+              }
+            } else if (!inLb || activeEl === lastLb) {
+              e.preventDefault();
+              firstLb.focus();
+            }
+          } else {
+            e.preventDefault();
+          }
+          return;
+        }
+        if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+          const lbTabs = lightboxOverlayEl.querySelectorAll("[data-lb-tab]");
+          if (lbTabs.length === 2) {
+            e.preventDefault();
+            const nextTab = viewState.modalImageTab === 2 ? 1 : 2;
+            if (!updateModalStageImage(nextTab)) {
+              viewState.modalImageTab = nextTab;
+            }
+            renderLightbox();
+            if (!document.activeElement || !lightboxOverlayEl.contains(document.activeElement)) {
+              const fallbackBtn = lightboxOverlayEl.querySelector('[data-lb-tab="' + String(nextTab) + '"]') || lightboxOverlayEl.querySelector(".ba-lightbox-close");
+              if (fallbackBtn && typeof fallbackBtn.focus === "function") {
+                try { fallbackBtn.focus({ preventScroll: true }); } catch (err) {}
+              }
+            }
+          }
+        }
+        return;
+      }
       if (e.key === "Tab") {
         const isEditMode = Boolean(opts.isEditor && opts.getIsEditMode && opts.getIsEditMode());
         const focusInModal = Boolean(activeEl && modalWindowEl.contains(activeEl));
@@ -2920,6 +3369,7 @@ function initArchiveViewer(mountEl, initialData, options) {
           viewState.activeCatTabId = "__CLOSED__";
           viewState.modalCharId = null;
           viewState.modalImageTab = 1;
+          viewState.lightboxOpen = false;
           renderAll();
           return;
         }
@@ -2967,18 +3417,21 @@ function initArchiveViewer(mountEl, initialData, options) {
         viewState.activeCatTabId = "__CLOSED__";
         viewState.modalCharId = null;
         viewState.modalImageTab = 1;
+        viewState.lightboxOpen = false;
         renderAll();
       },
       refreshModal: function () {
         renderModal();
       },
       openCharacter: function (charId) {
+        closeLightbox(false);
         viewState.modalCharId = charId;
         viewState.modalImageTab = 1;
         renderModal();
       },
       closeModal: function () {
         viewState.modalCharId = null;
+        viewState.lightboxOpen = false;
         renderModal();
       }
     };
